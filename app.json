@@ -66,7 +66,7 @@
   },
   "buildpacks": [
     {
-      "url": "heroku/python"
+      "url": "https://app.koyeb.com/apps/new/configure-service"
     }
   ],
   "formation": {
