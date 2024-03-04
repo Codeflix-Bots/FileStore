@@ -91,8 +91,6 @@ async def start_command(client: Client, message: Message):
                 pass
         await message.reply_text("Baka! Files will be deleted After 5 minutes. Save them to the Saved Message now!")
         await asyncio.sleep(SECONDS)
-            await msg.delete()
-            await k.edit_text("<b>Your File/Video is successfully deleted!!!</b>")
 
         for snt_msg in snt_msgs:
             try:
