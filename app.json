@@ -45,14 +45,6 @@
       "description": "id of the channel or group, if you want enable force sub feature else put 0",
       "value": "-1001495022147"
     },
-    "START_MESSAGE": {
-      "description": "Optional: start message of bot, use HTML parsemode format",
-      "value": "<b>ʙᴀᴋᴋᴀᴀᴀ!! {first}</b>\n\nI can provide files for @Team_Netflix & @Anime_Cruise_Netflix\nchannel Members!!\n\nᴊᴜꜱᴛ ᴅᴏɴ'ᴛ ᴏᴠᴇʀʟᴏᴀᴅ ᴍᴇ <a href=https://graph.org/file/6ef6eb1f0aed4920adaf2.jpg>🫣.</a></b>"
-    },
-    "FORCE_SUB_MESSAGE": {
-      "description": "Optional: Force Sub message of bot, use HTML parsemode format",
-      "value": "👋 Hello {first}!\nTo access these files you have to join our channel first.\nPlease subscribe to our channels through the buttons below and then tap on try again to get your files.\nThank You ❤️"
-    },
     "ADMINS": {
       "description": "A space separated list of user_ids of Admins, they can only create links",
       "value": "5115691197 6273945163 6103092779 5231212075",
