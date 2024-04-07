@@ -11,7 +11,7 @@
 * <b>ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ - [ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/Codeflix-Bots/FileStore/tree/AutoDelete)</b>
 * <b>𝟺 ғsᴜʙ - [ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/Codeflix-Bots/FileStore/tree/multi-fsub)</b>
 
-* ᴛᴏᴋᴇɴ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ - <b>[ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/Codeflix-Bots/File-Store-Bot-Token-Verification)</b>
+* <b>ᴛᴏᴋᴇɴ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ - [ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/Codeflix-Bots/File-Store-Bot-Token-Verification)</b>
 
  ━━━━━━━━━━━━━━━━━
 
