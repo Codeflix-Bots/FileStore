@@ -6,6 +6,11 @@
 ![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=FILE+SHARING+!;CREATED+BY+MIKEY+DEVELOPER!;A+ADVANCE+BOT+WITH+COOL+FEATURE!)
 </p>
 
+# ʙʀᴀɴᴄʜ
+* 𝟸 ғsᴜʙ - <b>[ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/Codeflix-Bots/FileStore)</b>
+* ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ - <b>[ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://t.me/codeflix_bots)</b>
+* 𝟺 ғsᴜʙ - <b>[ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://t.me/codeflix_bots)</b>
+
  ━━━━━━━━━━━━━━━━━
 
 ### Variables
