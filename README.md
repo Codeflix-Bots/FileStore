@@ -1,3 +1,72 @@
+#𝟹 ғsᴜʙ ғɪʟᴇ sʜᴀʀɪɴɢ ʙᴏᴛ ᴍᴏᴅɪғɪᴇᴅ ʙʏ ᴄᴏᴅᴇғʟɪx ʙᴏᴛs
+<p align="center">
+  <img src="https://graph.org/file/f62fde5714f4896beec32.jpg" alt="3 FSub File Store by codeflix bots">
+</p>
+<h2 align="center">
+
+<p align="center">
+
+
+ᴛᴇʟᴇɢʀᴀᴍ ʙᴏᴛ ᴛᴏ sᴛᴏʀᴇ ᴘᴏsᴛs ᴀɴᴅ ᴅᴏᴄᴜᴍᴇɴᴛs ᴀɴᴅ ɪᴛ ᴄᴀɴ ᴀᴄᴄᴇss ʙʏ sᴘᴇᴄɪᴀʟ ʟɪɴᴋs. ɪ ɢᴜᴇss ᴛʜɪs ᴡɪʟʟ ʙᴇ ᴜsᴇғᴜʟʟ ғᴏʀ ᴍᴀɴʏ ᴘᴇᴏᴘʟᴇ.....😇. 
+
+##
+
+**If you need any more modes in repo or If you find out any bugs, mention in <b>[sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ](https://github.com/weebs_support)  ➻  [ᴍɪᴋᴇʏ](https://t.me/sewxiy) </b>**
+
+
+### Features
+- Fully customisable.
+- Customisable welcome & Forcesub messages.
+- More than one Posts in One Link.
+- Can be deployed on heroku directly.
+
+### Setup
+
+- Add the bot to Database Channel with all permission
+- Add bot to ForceSub channel as Admin with Invite Users via Link Permission if you enabled ForceSub 
+
+<details>
+<summary><h3>
+- <b> ᴅᴇᴘʟᴏʏᴍᴇɴᴛ ᴍᴇᴛʜᴏᴅs </b>
+</h3></summary>
+<h3 align="center">
+    ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʜᴇʀᴏᴋᴜ 」─
+</h3>
+
+<p align="center"><a href="https://heroku.com/deploy?template=https://github.com/Codeflix-Bots/FileStore/tree/3fsub">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy On Heroku">
+</a></p>
+<h3 align="center">
+    ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ᴋᴏʏᴇʙ 」─
+</h3>
+<p align="center"><a href="https://app.koyeb.com/deploy?type=git&repository=github.com/Codeflix-Bots/FileStore&branch=3fsub&name=3fsub">
+  <img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy On Koyeb">
+</a></p>
+<h3 align="center">
+    ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʀᴀɪʟᴡᴀʏ 」─
+</h3>
+<p align="center"><a href="https://railway.app/deploy?template=https://github.com/Codeflix-Bots/FileStore/tree/3fsub"">
+     <img height="45px" src="https://railway.app/button.svg">
+</a></p>
+<h3 align="center">
+    ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʀᴇɴᴅᴇʀ 」─
+</h3>
+<p align="center"><a href="https://render.com/deploy?repo=https://github.com/Codeflix-Bots/FileStore/tree/3fsub">
+<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a></p>
+<h3 align="center">
+    ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ᴠᴘs 」─
+</h3>
+<p>
+<pre>
+git clone https://github.com/Codeflix-Bots/FileStore/tree/3fsub
+# Install Packages
+pip3 install -U -r requirements.txt
+Edit info.py with variables as given below then run bot
+python3 bot.py
+</pre>
+</p>
+</details>
 
 
 ### Variables
