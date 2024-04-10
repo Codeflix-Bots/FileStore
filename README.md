@@ -1,4 +1,3 @@
-#𝟹 ғsᴜʙ ғɪʟᴇ sʜᴀʀɪɴɢ ʙᴏᴛ ᴍᴏᴅɪғɪᴇᴅ ʙʏ ᴄᴏᴅᴇғʟɪx ʙᴏᴛs
 <p align="center">
   <img src="https://graph.org/file/f62fde5714f4896beec32.jpg" alt="3 FSub File Store by codeflix bots">
 </p>
@@ -7,7 +6,7 @@
 <p align="center">
 
 
-ᴛᴇʟᴇɢʀᴀᴍ ʙᴏᴛ ᴛᴏ sᴛᴏʀᴇ ᴘᴏsᴛs ᴀɴᴅ ᴅᴏᴄᴜᴍᴇɴᴛs ᴀɴᴅ ɪᴛ ᴄᴀɴ ᴀᴄᴄᴇss ʙʏ sᴘᴇᴄɪᴀʟ ʟɪɴᴋs. ɪ ɢᴜᴇss ᴛʜɪs ᴡɪʟʟ ʙᴇ ᴜsᴇғᴜʟʟ ғᴏʀ ᴍᴀɴʏ ᴘᴇᴏᴘʟᴇ.....😇. 
+# 𝟹 ғsᴜʙ ғɪʟᴇ sʜᴀʀɪɴɢ ʙᴏᴛ ᴍᴏᴅɪғɪᴇᴅ ʙʏ ᴄᴏᴅᴇғʟɪx ʙᴏᴛs 
 
 ##
 
