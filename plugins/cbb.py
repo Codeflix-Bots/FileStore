@@ -10,13 +10,13 @@ async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
     if data == "about":
         await query.message.edit_text(
-            text = f"<b>○ ᴏᴡɴᴇʀ : <a href='tg://user?id={ADMINS}'>Owner of legend dubbers</a>\n○ ᴍʏ ᴜᴘᴅᴀᴛᴇs : <a href='@tokyo_legeds_official_005'>Mine channel</a>\n○ ᴍᴏᴠɪᴇs ᴜᴘᴅᴀᴛᴇs : <a href='https://t.me/+wnooTei80GoxYzU1'>Movie requst group</a>\n○ ᴏᴜʀ ᴄᴏᴍᴍᴜɴɪᴛʏ : <a href='https://t.me/addlist/9SFSS797ee8xY2Fl'>ᴄᴏᴍᴍᴜɴɪᴛʏ</a> ",
+            text = f"<b>○ ᴏᴡɴᴇʀ : <a href='0'></a>\0 : <a href='https://t.me/tokyo_legeds_official_005'>mine</a>\n○ ᴍᴏᴠɪᴇs ᴜᴘᴅᴀᴛᴇs : <a href='https://t.me/+wnooTei80GoxYzU1'>Movie requst group</a>\n○ ᴏᴜʀ ᴄᴏᴍᴍᴜɴɪᴛʏ : <a href='Owner of legend dubbers https://t.me/tokyo_legeds_official_005 https://t.me/addlist/9SFSS797ee8xY2F1'>anime ɴᴇᴛᴡᴏʀᴋ</a>\n○ ᴀɴɪᴍᴇ ᴄʜᴀᴛ : <a href='https://t.me/+gMegLl-3vGY3ZmU1'>ᴡᴇᴇʙ ᴢᴏɴᴇ</a></b>",
             disable_web_page_preview = True,
             reply_markup = InlineKeyboardMarkup(
                 [
                     [
                     InlineKeyboardButton("⚡️ ᴄʟᴏsᴇ", callback_data = "close"),
-                    InlineKeyboardButton('🍁 ᴘʀᴇᴍɪᴜᴍ', url='@tokyo_legeds_official_005')
+                    InlineKeyboardButton('🍁 ᴘʀᴇᴍɪᴜᴍ', url='https://t.me/tokyo_legeds_official_005')
                     ]
                 ]
             )
