@@ -88,14 +88,12 @@ async def start_command(client: Client, message: Message):
                 snt_msgs.append(snt_msg)
             except:
                 pass
-        await message.reply_text("**Baka! Files will be deleted After 10 seconds. Save them to the Saved Message now!.**")
+        k = await client.send_message(chat_id = message.from_user.id, text=f"<b>❗️ <u>baka!</u> ❗️</b>\n\nThis video / file will be deleted in 10 minutes (Due to copyright issues).\n\n📌 Please forward this video / file to somewhere else and start downloading there.")
         await asyncio.sleep(SECONDS)
+        await f.delete()
+        await k.edit_text("<b>Your video / file is successfully deleted !</b>")
 
-        for snt_msg in snt_msgs:
-            try:
-                await snt_msg.delete()
-            except:
-                pass
+
         return
     else:
         reply_markup = InlineKeyboardMarkup(
