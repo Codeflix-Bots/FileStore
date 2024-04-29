@@ -60,12 +60,11 @@ async def start_command(client: Client, message: Message):
         try:
             messages = await get_messages(client, ids)
         except:
-            await message.reply_text("Something went wrong..!")
+            await message.reply_text("​​​Something went wrong..!")
             return
         await temp_msg.delete()
-        
-        snt_msgs = []
-        
+
+        Codeflix = []
         for msg in messages:
 
             if bool(CUSTOM_CAPTION) & bool(msg.document):
@@ -81,22 +80,24 @@ async def start_command(client: Client, message: Message):
             try:
                 snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
                 await asyncio.sleep(0.5)
-                snt_msgs.append(snt_msg)
+                Codeflix.append(snt_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
                 snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-                snt_msgs.append(snt_msg)
+                Codeflix.append(snt_msg)
             except:
                 pass
+
         k = await message.reply_text("<b>❗️ <u>baka!</u> ❗️</b>\n\n<b>This video / file will be deleted in 10 minutes (Due to copyright issues).\n\n📌 Please forward this video / file to somewhere else and start downloading there.</b>")
         await asyncio.sleep(SECONDS)
 
-        for snt_msg in snt_msgs:
+        for data in Codeflix:
             try:
-                await snt_msg.delete()
+                await data.delete()
                 await k.edit_text("<b>Your video / file is successfully deleted !</b>")
             except:
                 pass
+
         return
     else:
         reply_markup = InlineKeyboardMarkup(
