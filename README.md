@@ -70,7 +70,7 @@
 <h3 align="center">
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʀᴀɪʟᴡᴀʏ 」─
 </h3>
-<p align="center"><a href="https://railway.app/deploy?template=https://github.com/NobiDeveloper/Rename-Bot"">
+<p align="center"><a href="https://railway.app/deploy?template=https://github.com/Codeflix-Bots/FileStore"">
      <img height="45px" src="https://railway.app/button.svg">
 </a></p>
 <h3 align="center">
