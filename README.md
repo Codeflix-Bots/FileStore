@@ -1,15 +1,4 @@
-# ᴍᴜʟᴛɪ ғsᴜʙ ғɪʟᴇ sʜᴀʀɪɴɢ ʙᴏᴛ ᴍᴏᴅɪғɪᴇᴅ ʙʏ ᴄᴏᴅᴇғʟɪx ʙᴏᴛs
-<p align="center">
-  <img src="https://graph.org/file/04206ec6d9b1606fdc107.jpg" alt="Multi FSub File Store by codeflix bots">
-</p>
-<h2 align="center">
 
-<p align="center">
-
-
-ᴛᴇʟᴇɢʀᴀᴍ ʙᴏᴛ ᴛᴏ sᴛᴏʀᴇ ᴘᴏsᴛs ᴀɴᴅ ᴅᴏᴄᴜᴍᴇɴᴛs ᴀɴᴅ ɪᴛ ᴄᴀɴ ᴀᴄᴄᴇss ʙʏ sᴘᴇᴄɪᴀʟ ʟɪɴᴋs. ɪ ɢᴜᴇss ᴛʜɪs ᴡɪʟʟ ʙᴇ ᴜsᴇғᴜʟʟ ғᴏʀ ᴍᴀɴʏ ᴘᴇᴏᴘʟᴇ.....😇. 
-
-##
 
 **If you need any more modes in repo or If you find out any bugs, mention in <b>[sᴜᴘᴘᴏʀᴛ ᴄʜᴀᴛ](https://github.com/weebs_support)  ➻  [ᴍɪᴋᴇʏ](https://t.me/sewxiy) </b>**
 
