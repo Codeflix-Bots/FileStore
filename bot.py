@@ -1,4 +1,4 @@
-#(©)Codexbotz
+#(©)Anime_Eternals
 
 from aiohttp import web
 from plugins import web_server
