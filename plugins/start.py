@@ -17,7 +17,7 @@ from database.database import add_user, del_user, full_userbase, present_user
 
 """add time im seconds for waitingwaiting before delete 
 1min=60, 2min=60×2=120, 5min=60×5=300"""
-SECONDS = int(os.getenv("SECONDS", "10"))
+SECONDS = int(os.getenv("SECONDS", "60"))
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -79,7 +79,7 @@ async def start_command(client: Client, message: Message):
 
             try:
                 snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-                await asyncio.sleep(0.9)
+                await asyncio.sleep(1)
                 Codeflix.append(snt_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
