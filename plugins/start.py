@@ -197,7 +197,6 @@ async def send_text(client: Bot, message: Message):
         await asyncio.sleep(8)
         await msg.delete()
 
-# Function to handle file deletion
 async def delete_files(messages, client, k):
     await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
     for msg in messages:
@@ -206,10 +205,16 @@ async def delete_files(messages, client, k):
         except Exception as e:
             print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
 
-    button_url = f"https://t.me/{client.username}?start={k.command[1]}"
-    keyboard = InlineKeyboardMarkup().add(
-        InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)
-    )
+    # Safeguard against k.command being None
+    command_part = k.command[1] if k.command and len(k.command) > 1 else None
+
+    if command_part:
+        button_url = f"https://t.me/{client.username}?start={command_part}"
+        keyboard = InlineKeyboardMarkup().add(
+            InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)
+        )
+    else:
+        keyboard = None
     
     # Edit message with the button
     await k.edit_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
