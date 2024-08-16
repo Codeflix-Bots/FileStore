@@ -1,23 +1,16 @@
-#(©) Codeflix_Bots
-
-
-
-
-import os
-import asyncio
+import os, asyncio, humanize
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
-
 from bot import Bot
-from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT
+from config import *
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
 
-"""add time im seconds for waitingwaiting before delete 
-1min=60, 2min=60×2=120, 5min=60×5=300"""
-SECONDS = int(os.getenv("SECONDS", "60"))
+codeflixbots = FILE_AUTO_DELETE
+subaru = codeflixbots
+file_auto_delete = humanize.naturaldelta(subaru)
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -56,15 +49,16 @@ async def start_command(client: Client, message: Message):
                 ids = [int(int(argument[1]) / abs(client.db_channel.id))]
             except:
                 return
-        temp_msg = await message.reply("Wait A Second...")
+        temp_msg = await message.reply("Wait A Sec..")
         try:
             messages = await get_messages(client, ids)
         except:
-            await message.reply_text("​​​Something went wrong..!")
+            await message.reply_text("Something Went Wrong..!")
             return
         await temp_msg.delete()
+    
+        codeflix_msgs = [] # List to keep track of sent messages
 
-        Codeflix = []
         for msg in messages:
 
             if bool(CUSTOM_CAPTION) & bool(msg.document):
@@ -78,25 +72,30 @@ async def start_command(client: Client, message: Message):
                 reply_markup = None
 
             try:
-                snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-                await asyncio.sleep(1)
-                Codeflix.append(snt_msg)
+                codeflix_msgs = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
+                # await asyncio.sleep(0.5)
+                codeflix_msgs.append(codeflix_msgs)
+                
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-                Codeflix.append(snt_msg)
+                codeflix_msgs = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
+                codeflix_msgs.append(codeflix_msgs)
+                
             except:
                 pass
 
-        k = await message.reply_text("<b>❗️ <u>baka!</u> ❗️</b>\n\n<b>This video / file will be deleted in 10 minutes (Due to copyright issues).\n\n📌 Please forward this video / file to somewhere else and start downloading there.</b>")
-        await asyncio.sleep(SECONDS)
 
-        for data in Codeflix:
-            try:
-                await data.delete()
-                await k.edit_text("<b>Your video / file is successfully deleted !</b>")
-            except:
-                pass
+        k = await client.send_message(chat_id = message.from_user.id, text=f"<b><i>This File is deleting automatically in {file_auto_delete}. Forward in your Saved Messages..!</i></b>")
+
+        # Schedule the file deletion
+        asyncio.create_task(delete_files(codeflix_msgs, client, k))
+        
+        # for codeflix_msgs in codeflix_msgs: 
+            # try:
+                # await codeflix_msgs.delete()
+                # await k.edit_text("Your Video / File Is Successfully Deleted ✅") 
+            # except:    
+                # pass 
 
         return
     else:
@@ -123,13 +122,8 @@ async def start_command(client: Client, message: Message):
         return
 
     
-#=====================================================================================##
 
-WAIT_MSG = """"<b>Processing ...</b>"""
 
-REPLY_ERROR = """<code>Use this command as a replay to any telegram message with out any spaces.</code>"""
-
-#=====================================================================================##
 
     
     
@@ -166,11 +160,15 @@ async def not_joined(client: Client, message: Message):
         disable_web_page_preview = True
     )
 
+
+
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
-    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
+    msg = await client.send_message(chat_id=message.chat.id, text=f"Processing...")
     users = await full_userbase()
-    await msg.edit(f"{len(users)} users are using this bot")
+    await msg.edit(f"{len(users)} Users Are Using This Bot")
+
+
 
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
@@ -203,17 +201,35 @@ async def send_text(client: Bot, message: Message):
                 pass
             total += 1
         
-        status = f"""<b><u>Broadcast Completed</u>
+        status = f"""<b><u>Broadcast Completed</u></b>
 
-Total Users: <code>{total}</code>
-Successful: <code>{successful}</code>
-Blocked Users: <code>{blocked}</code>
-Deleted Accounts: <code>{deleted}</code>
-Unsuccessful: <code>{unsuccessful}</code></b>"""
+<b>Total Users :</b> <code>{total}</code>
+<b>Successful :</b> <code>{successful}</code>
+<b>Blocked Users :</b> <code>{blocked}</code>
+<b>Deleted Accounts :</b> <code>{deleted}</code>
+<b>Unsuccessful :</b> <code>{unsuccessful}</code>"""
         
         return await pls_wait.edit(status)
 
     else:
-        msg = await message.reply(REPLY_ERROR)
+        msg = await message.reply(f"Use This Command As A Reply To Any Telegram Message With Out Any Spaces.")
         await asyncio.sleep(8)
         await msg.delete()
+
+
+# Function to handle file deletion
+async def delete_files(messages, client, k):
+    await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
+    for msg in messages:
+        try:
+            await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
+        except Exception as e:
+            print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
+
+    button_url = f"https://t.me/{client.username}?start={k.command[1]}"
+    keyboard = InlineKeyboardMarkup().add(
+        InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)
+    )
+    
+    # Edit message with the button
+    await k.edit_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
