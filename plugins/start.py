@@ -93,7 +93,7 @@ async def start_command(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton('⚡️ Group', url='https://t.me/+iLKCfLzf4vQyN2Ux'),
-                    InlineKeyboardButton('🍁 Series', url='hhttps://t.me/+uvwbqkADCYg1MzM1')
+                    InlineKeyboardButton('🍁 Series', url='https://t.me/+uvwbqkADCYg1MzM1')
                 ]
             ]
         )
