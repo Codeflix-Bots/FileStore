@@ -1,9 +1,6 @@
-# --- For-Bot-Working --------- #
-pyrogram
+https://codeload.github.com/KurimuzonAkuma/pyrogram/zip/refs/heads/dev
 TgCrypto
-pyromod==1.5
-# --- For-Database ------------ #
+pyromod
 pymongo
 dnspython
-# --- For-Web-Response ------- #
 aiohttp
