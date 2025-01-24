@@ -1,4 +1,6 @@
-import os, asyncio, humanize
+import os
+import asyncio
+import humanize
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
@@ -8,58 +10,59 @@ from config import *
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
 
-codeflixbots = FILE_AUTO_DELETE
-yato = codeflixbots
-file_auto_delete = humanize.naturaldelta(yato)
+# File auto delete time in seconds (Set your desired time in seconds here)
+FILE_AUTO_DELETE_TIME = 3600  # Example: 3600 seconds (1 hour)
 
+# Convert the auto-delete time to a human-readable format
+file_auto_delete = humanize.naturaldelta(FILE_AUTO_DELETE_TIME)
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
-    id = message.from_user.id
-    if not await present_user(id):
+    user_id = message.from_user.id
+    
+    # Add user if not already present
+    if not await present_user(user_id):
         try:
-            await add_user(id)
+            await add_user(user_id)
         except:
             pass
+    
     text = message.text
-    if len(text)>7:
+    if len(text) > 7:
         try:
             base64_string = text.split(" ", 1)[1]
         except:
             return
+        
         string = await decode(base64_string)
         argument = string.split("-")
+        
         if len(argument) == 3:
             try:
                 start = int(int(argument[1]) / abs(client.db_channel.id))
                 end = int(int(argument[2]) / abs(client.db_channel.id))
             except:
                 return
-            if start <= end:
-                ids = range(start,end+1)
-            else:
-                ids = []
-                i = start
-                while True:
-                    ids.append(i)
-                    i -= 1
-                    if i < end:
-                        break
+            
+            ids = range(start, end+1) if start <= end else list(range(start, end-1, -1))
         elif len(argument) == 2:
             try:
                 ids = [int(int(argument[1]) / abs(client.db_channel.id))]
             except:
                 return
-        temp_msg = await message.reply("Wait Bro...")
+        
+        # Send wait message
+        temp_msg = await message.reply("Wait... Processing...")
         try:
             messages = await get_messages(client, ids)
         except:
-            await message.reply_text("Something went wrong..!")
+            await message.reply_text("Something went wrong!")
             return
         await temp_msg.delete()
 
         codeflix_msgs = []  # List to keep track of sent messages
 
+        # Loop through messages to copy them
         for msg in messages:
             caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, 
                                              filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
@@ -68,55 +71,60 @@ async def start_command(client: Client, message: Message):
             reply_markup = msg.reply_markup if DISABLE_CHANNEL_BUTTON else None
 
             try:
-                copied_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, 
-                                            reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
+                copied_msg = await msg.copy(
+                    chat_id=message.from_user.id, 
+                    caption=caption, 
+                    parse_mode=ParseMode.HTML, 
+                    reply_markup=reply_markup, 
+                    protect_content=PROTECT_CONTENT
+                )
                 codeflix_msgs.append(copied_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                copied_msg = await msg.copy(chat_id=message.from_user.id, caption=caption, parse_mode=ParseMode.HTML, 
-                                            reply_markup=reply_markup, protect_content=PROTECT_CONTENT)
+                copied_msg = await msg.copy(
+                    chat_id=message.from_user.id, 
+                    caption=caption, 
+                    parse_mode=ParseMode.HTML, 
+                    reply_markup=reply_markup, 
+                    protect_content=PROTECT_CONTENT
+                )
                 codeflix_msgs.append(copied_msg)
             except Exception as e:
                 print(f"Failed to send message: {e}")
                 pass
 
-        k = await client.send_message(chat_id=message.from_user.id, 
-                                      text=f"<b><i>This File is deleting automatically in {file_auto_delete}. Forward in your Saved Messages..!</i></b>")
+        # Send auto delete reminder
+        k = await client.send_message(
+            chat_id=message.from_user.id, 
+            text=f"<b><i>This File is deleting automatically in {file_auto_delete}. Forward it to your Saved Messages..!</i></b>"
+        )
 
         # Schedule the file deletion
         asyncio.create_task(delete_files(codeflix_msgs, client, k))
-
         return
     else:
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("ʜᴇʟᴘ", callback_data='help'),
              InlineKeyboardButton("ᴀʙᴏᴜᴛ", callback_data='about')]
         ])
+        
         await message.reply_photo(
-            photo= START_PIC,
-            caption= START_MSG.format(
-                first = message.from_user.first_name,
-                last = message.from_user.last_name,
-                username = None if not message.from_user.username else '@' + message.from_user.username,
-                mention = message.from_user.mention,
-                id = message.from_user.id
+            photo=START_PIC,
+            caption=START_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name,
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
+                id=message.from_user.id
             ),
-            reply_markup = reply_markup,
-            
+            reply_markup=reply_markup
         )
         return
-    
 
-#=====================================================================================##
-
+# Wait message and error message for user-related actions
 WAIT_MSG = "<b>Working....</b>"
-
 REPLY_ERROR = "<code>Use this command as a reply to any telegram message without any spaces.</code>"
 
-#=====================================================================================##
-
-    
-    
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
     buttons = [
@@ -138,16 +146,16 @@ async def not_joined(client: Client, message: Message):
         pass
 
     await message.reply_photo(
-    photo=FORCE_PIC, 
-    caption=FORCE_MSG.format(
-        first=message.from_user.first_name,
-        last=message.from_user.last_name,
-        username=None if not message.from_user.username else '@' + message.from_user.username,
-        mention=message.from_user.mention,
-        id=message.from_user.id
-    ),
-    reply_markup=InlineKeyboardMarkup(buttons)
-)
+        photo=FORCE_PIC, 
+        caption=FORCE_MSG.format(
+            first=message.from_user.first_name,
+            last=message.from_user.last_name,
+            username=None if not message.from_user.username else '@' + message.from_user.username,
+            mention=message.from_user.mention,
+            id=message.from_user.id
+        ),
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
 
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
@@ -166,7 +174,7 @@ async def send_text(client: Bot, message: Message):
         deleted = 0
         unsuccessful = 0
         
-        pls_wait = await message.reply("<i>ʙʀᴏᴀᴅᴄᴀꜱᴛ ᴘʀᴏᴄᴇꜱꜱɪɴɢ....</i>")
+        pls_wait = await message.reply("<i>Broadcast processing....</i>")
         for chat_id in query:
             try:
                 await broadcast_msg.copy(chat_id)
@@ -186,7 +194,7 @@ async def send_text(client: Bot, message: Message):
                 pass
             total += 1
         
-        status = f"""<b><u>ʙʀᴏᴀᴅᴄᴀꜱᴛ...</u>
+        status = f"""<b><u>Broadcast Report</u>
 
 Total Users: <code>{total}</code>
 Successful: <code>{successful}</code>
@@ -195,7 +203,6 @@ Deleted Accounts: <code>{deleted}</code>
 Unsuccessful: <code>{unsuccessful}</code></b>"""
         
         return await pls_wait.edit(status)
-
     else:
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
