@@ -1,18 +1,22 @@
-import os, asyncio, humanize
+import asyncio
+import os
+import random
+import sys
+import time
+import string
+import humanize
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 from bot import Bot
 from config import *
-from helper_func import subscribed, encode, decode, get_messages
-from database.database import add_user, del_user, full_userbase, present_user
+from helper_func import *
+from database.database import *
 
 # File auto-delete time in seconds (Set your desired time in seconds here)
 FILE_AUTO_DELETE = TIME  # Example: 3600 seconds (1 hour)
 
-# Convert the auto-delete time to a human-readable format
-file_auto_delete = humanize.naturaldelta(FILE_AUTO_DELETE)
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -83,16 +87,17 @@ async def start_command(client: Client, message: Message):
                 print(f"Failed to send message: {e}")
                 pass
 
-        # Save the original 'start' command part for the "Get File Again" button
-        start_command_part = text.split(" ", 1)[0] if len(text.split(" ", 1)) > 0 else None
-
-        k = await client.send_message(chat_id=message.from_user.id, 
-                                      text=f"<b><i>This File is deleting automatically in {file_auto_delete}. Forward in your Saved Messages..!</i></b>")
-
-        # Schedule the file deletion
-        asyncio.create_task(delete_files(codeflix_msgs, client, k, start_command_part, message))
-
-        return
+        if FILE_AUTO_DELETE == 0:
+                    return
+                notification_msg = await message.reply(f"<b>This file will be deleted in {get_exp_time(FILE_AUTO_DELETE)}. Please save or forward it to your saved messages before it gets deleted.</b>")
+                await asyncio.sleep(FILE_AUTO_DELETE)    
+                for snt_msg in snt_msgs:    
+                    try:    
+                        await snt_msg.delete()  
+                    except: 
+                        pass    
+                await notification_msg.edit("<b><i>Your Video / File Is Successfully Deleted ✅</i></b>", reply_markup=keyboard)
+                return
     else:
         reply_markup = InlineKeyboardMarkup(
             [
@@ -172,5 +177,4 @@ async def delete_files(messages, client, k, start_command_part, original_message
     else:
         keyboard = None
 
-    # Edit message with the button
-    await k.edit_text("<b><i>Your Video / File Is Successfully Deleted ✅</i></b>", reply_markup=keyboard)
+  
