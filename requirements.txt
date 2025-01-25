@@ -2,6 +2,7 @@ pyrogram
 pyrofork
 TgCrypto
 pyromod
+humanize
 schedule
 APscheduler
 # --- For-Database ------------ #
