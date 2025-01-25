@@ -183,7 +183,8 @@ async def start_command(client: Client, message: Message):
 
 
 #=====================================================================================##
-#@rohit_1888 on Tg
+# Don't Remove Credit @CodeFlix_Bots, @rohit_1888
+# Ask Doubt on telegram @CodeflixSupport
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
