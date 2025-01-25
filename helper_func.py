@@ -79,7 +79,7 @@ async def is_subscribed4(filter, client, update):
     else:
         return True
 
-        
+
 async def encode(string):
     string_bytes = string.encode("ascii")
     base64_bytes = base64.urlsafe_b64encode(string_bytes)
@@ -194,3 +194,4 @@ subscribed2 = filters.create(is_subscribed2)
 subscribed3 = filters.create(is_subscribed3)
 subscribed4 = filters.create(is_subscribed4)
 
+#rohit_1888 on Tg :
