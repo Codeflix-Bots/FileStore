@@ -23,11 +23,18 @@
 * `START_MESSAGE` Optional: start message of bot, use HTML and <a href='https://github.com/codexbotz/File-Sharing-Bot/blob/main/README.md#start_message'>fillings</a>
 * `FORCE_SUB_MESSAGE`Optional:Force sub message of bot, use HTML and Fillings
 * `FORCE_SUB_CHANNEL` Optional: ForceSub Channel ID, leave 0 if you want disable force sub
-* `FORCE_SUB_CHANNEL1` Required: 1st ForceSub Channel ID
-* `FORCE_SUB_CHANNEL2` Required: 2nd ForceSub Channel ID
-* `FORCE_SUB_CHANNEL3` Required: 3rd ForceSub Channel ID
-* `FORCE_SUB_CHANNEL4` Required: 4th ForceSub Channel ID
+* `FORCE_SUB_CHANNEL1` 1st ForceSub Channel ID, leave 0 if you want disable force sub
+* `FORCE_SUB_CHANNEL2` 2nd ForceSub Channel ID, leave 0 if you want disable force sub
+* `FORCE_SUB_CHANNEL3` 3rd ForceSub Channel ID, leave 0 if you want disable force sub
+* `FORCE_SUB_CHANNEL4` 4th ForceSub Channel ID, leave 0 if you want disable force sub
 * `PROTECT_CONTENT` Optional: True if you need to prevent files from forwarding
+
+### Token Variables
+
+* `IS_VERIFY` = Default : "True" (if you want off : False )
+* `SHORTLINK_URL` = Your shortner Url ( ex. "api.shareus.io")
+* `SHORTLINK_API` = Your shortner API (ex. "PUIAQBIFrydvLhIzAOeGV8yZppu")
+* `VERIFY_EXPIRE` = ( ex. 86400)) # Add time in seconds
 
 ## 𝐶𝑜𝑚𝑚𝑎𝑛𝑑𝑠
 
