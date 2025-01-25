@@ -17,7 +17,6 @@ from database.database import *
 # File auto-delete time in seconds (Set your desired time in seconds here)
 FILE_AUTO_DELETE = TIME  # Example: 3600 seconds (1 hour)
 
-
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
@@ -27,7 +26,7 @@ async def start_command(client: Client, message: Message):
         except Exception as e:
             print(f"Error adding user: {e}")
             pass
-    
+
     text = message.text
     if len(text) > 7:
         try:
@@ -37,7 +36,7 @@ async def start_command(client: Client, message: Message):
 
         string = await decode(base64_string)
         argument = string.split("-")
-        
+
         ids = []
         if len(argument) == 3:
             try:
@@ -87,17 +86,39 @@ async def start_command(client: Client, message: Message):
                 print(f"Failed to send message: {e}")
                 pass
 
-        if FILE_AUTO_DELETE == 0:
-                    return
-                notification_msg = await message.reply(f"<b>This file will be deleted in {get_exp_time(FILE_AUTO_DELETE)}. Please save or forward it to your saved messages before it gets deleted.</b>")
-                await asyncio.sleep(FILE_AUTO_DELETE)    
-                for snt_msg in snt_msgs:    
-                    try:    
-                        await snt_msg.delete()  
-                    except: 
-                        pass    
-                await notification_msg.edit("<b><i>Your Video / File Is Successfully Deleted ✅</i></b>", reply_markup=keyboard)
-                return
+        if FILE_AUTO_DELETE > 0:
+            notification_msg = await message.reply(
+                f"<b>This file will be deleted in {get_exp_time(FILE_AUTO_DELETE)}. Please save or forward it to your saved messages before it gets deleted.</b>"
+            )
+            
+            # Wait for the specified auto-delete time
+            await asyncio.sleep(FILE_AUTO_DELETE)
+
+            # Delete the sent messages
+            for snt_msg in codeflix_msgs:    
+                try:    
+                    await snt_msg.delete()  
+                except Exception as e:
+                    print(f"Error deleting message {snt_msg.id}: {e}")
+            
+            # Construct the "Get File Again" button if required
+            try:
+                reload_url = (
+                    f"https://t.me/{client.username}?start={message.command[1]}"
+                    if message.command and len(message.command) > 1
+                    else None
+                )
+                keyboard = InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]
+                ) if reload_url else None
+
+                # Send a new message with the "Get File Again" button
+                await notification_msg.edit(
+                    "<b><i>Your Video / File Has Been Successfully Deleted ✅</i></b>",
+                    reply_markup=keyboard
+                )
+            except Exception as e:
+                print(f"Error updating notification with 'Get File Again' button: {e}")
     else:
         reply_markup = InlineKeyboardMarkup(
             [
@@ -153,28 +174,3 @@ async def not_joined(client: Client, message: Message):
         quote=True,
         disable_web_page_preview=True
     )
-
-# Function to handle file deletion and update the "Get File Again" button
-async def delete_files(messages, client, k, start_command_part, original_message):
-    await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
-    
-    for msg in messages:
-        try:
-            await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
-        except Exception as e:
-            print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
-
-    # Retrieve the original 'start' URL (reload button)
-    reload_url = f"https://t.me/{client.username}?start={original_message.command[1]}" if original_message.command and len(original_message.command) > 1 else None
-
-    # If start_command_part exists, generate the "Get File Again" button
-    if reload_url:
-        keyboard = InlineKeyboardMarkup(
-            [
-                [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]
-            ]
-        )
-    else:
-        keyboard = None
-
-  
