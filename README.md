@@ -1,8 +1,14 @@
 # REPO UNDER MAINTENANCE 
 # DON'T DEPLOY OR FORK THE REPO!
+━━━━━━━━━━━━━━━━━━━━
+
 <h2 align="center">
-  ─「 ғɪʟᴇ sʜᴀʀɪɴɢ ʙᴏᴛ 」─
+    ──「 ғɪʟᴇ sᴛᴏʀᴇ ᴘʀᴏ 」──
 </h2>
+
+<p align="center">
+  <img src="https://graph.org/file/8581e33195ed8183a3253.jpg">
+</p>
 
 
 ![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=FILE+SHARING+!;CREATED+BY+CODEFLIX+DEVELOPER!;A+ADVANCE+BOT+WITH+COOL+FEATURE!)
