@@ -193,14 +193,4 @@ subscribed1 = filters.create(is_subscribed1)
 subscribed2 = filters.create(is_subscribed2)
 subscribed3 = filters.create(is_subscribed3)
 subscribed4 = filters.create(is_subscribed4)
-    
-
-
-
-
-
-
-
-
-
 
