@@ -9,7 +9,7 @@ from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
 
 # File auto-delete time in seconds (Set your desired time in seconds here)
-FILE_AUTO_DELETE = 5  # Example: 3600 seconds (1 hour)
+FILE_AUTO_DELETE = TIME  # Example: 3600 seconds (1 hour)
 
 # Convert the auto-delete time to a human-readable format
 file_auto_delete = humanize.naturaldelta(FILE_AUTO_DELETE)
