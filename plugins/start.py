@@ -4,6 +4,7 @@ import random
 import sys
 import time
 import string
+import string as rohit
 import humanize
 from pyrogram import Client, filters, __version__
 from pyrogram.enums import ParseMode
@@ -16,6 +17,7 @@ from database.database import *
 
 # File auto-delete time in seconds (Set your desired time in seconds here)
 FILE_AUTO_DELETE = TIME  # Example: 3600 seconds (1 hour)
+TUT_VID = f"{TUT_VID}"
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed1 & subscribed2 & subscribed3 & subscribed4)
 async def start_command(client: Client, message: Message):
@@ -27,6 +29,43 @@ async def start_command(client: Client, message: Message):
             print(f"Error adding user: {e}")
             pass
 
+    verify_status = await get_verify_status(id)
+
+    # If TOKEN is enabled, handle verification logic
+    if TOKEN:
+        if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+            await update_verify_status(id, is_verified=False)
+
+        if "verify_" in message.text:
+            _, token = message.text.split("_", 1)
+            if verify_status['verify_token'] != token:
+                return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+            await update_verify_status(id, is_verified=True, verified_time=time.time())
+            if verify_status["link"] == "":
+                reply_markup = None
+            return await message.reply(
+                "Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.",
+                reply_markup=reply_markup,
+                protect_content=False,
+                quote=True
+            )
+
+        if not verify_status['is_verified']:
+            token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
+            await update_verify_status(id, verify_token=token, link="")
+            link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
+            btn = [
+                [InlineKeyboardButton("Click here 👍", url=link)],
+                [InlineKeyboardButton('How to use the bot 👆', url=TUT_VID)]
+            ]
+            return await message.reply(
+                f"Your token has expired. Please refresh your token to continue.\n\nToken Timeout: {get_exp_time(VERIFY_EXPIRE)}\n\nWhat is the token?\n\nThis is an ads token. Passing one ad allows you to use the bot for {get_exp_time(VERIFY_EXPIRE)}.",
+                reply_markup=InlineKeyboardMarkup(btn),
+                protect_content=False,
+                quote=True
+            )
+
+    # Handle normal message flow
     text = message.text
     if len(text) > 7:
         try:
@@ -54,18 +93,17 @@ async def start_command(client: Client, message: Message):
                 print(f"Error decoding ID: {e}")
                 return
 
-        temp_msg = await message.reply("Wait A Sec..")
+        temp_msg = await message.reply("Please wait...")
         try:
             messages = await get_messages(client, ids)
         except Exception as e:
-            await message.reply_text("Something Went Wrong..!")
+            await message.reply_text("Something went wrong!")
             print(f"Error getting messages: {e}")
             return
         finally:
             await temp_msg.delete()
 
-        codeflix_msgs = []  # List to keep track of sent messages
-
+        codeflix_msgs = []
         for msg in messages:
             caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, 
                                              filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
@@ -90,18 +128,16 @@ async def start_command(client: Client, message: Message):
             notification_msg = await message.reply(
                 f"<b>This file will be deleted in {get_exp_time(FILE_AUTO_DELETE)}. Please save or forward it to your saved messages before it gets deleted.</b>"
             )
-            
-            # Wait for the specified auto-delete time
+
             await asyncio.sleep(FILE_AUTO_DELETE)
 
-            # Delete the sent messages
             for snt_msg in codeflix_msgs:    
-                try:    
-                    await snt_msg.delete()  
-                except Exception as e:
-                    print(f"Error deleting message {snt_msg.id}: {e}")
-            
-            # Construct the "Get File Again" button if required
+                if snt_msg:
+                    try:    
+                        await snt_msg.delete()  
+                    except Exception as e:
+                        print(f"Error deleting message {snt_msg.id}: {e}")
+
             try:
                 reload_url = (
                     f"https://t.me/{client.username}?start={message.command[1]}"
@@ -109,12 +145,11 @@ async def start_command(client: Client, message: Message):
                     else None
                 )
                 keyboard = InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]
+                    [[InlineKeyboardButton("Get File Again!", url=reload_url)]]
                 ) if reload_url else None
 
-                # Send a new message with the "Get File Again" button
                 await notification_msg.edit(
-                    "<b>ʏᴏᴜʀ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ ɪꜱ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ !!\n\nᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ᴅᴇʟᴇᴛᴇᴅ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ 👇</b>",
+                    "<b><i>Your video/file has been successfully deleted ✅</i></b>",
                     reply_markup=keyboard
                 )
             except Exception as e:
@@ -123,24 +158,24 @@ async def start_command(client: Client, message: Message):
         reply_markup = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton('⚡️ ᴍᴏᴠɪᴇs', url='https://t.me/+QVewP06XCPFiYWZl'),
-                    InlineKeyboardButton('🍁 sᴇʀɪᴇs', url='https://t.me/webseries_flix')
+                    InlineKeyboardButton('⚡️ Movies', url='https://t.me/+QVewP06XCPFiYWZl'),
+                    InlineKeyboardButton('🍁 Series', url='https://t.me/webseries_flix')
                 ]
             ]
         )
-        await message.reply_photo(
-            photo=START_PIC,
-            caption=START_MSG.format(
+        await message.reply_text(
+            text=START_MSG.format(
                 first=message.from_user.first_name,
                 last=message.from_user.last_name,
                 username=None if not message.from_user.username else '@' + message.from_user.username,
                 mention=message.from_user.mention,
                 id=message.from_user.id
             ),
-            reply_markup=reply_markup,
-            message_effect_id=5104841245755180586  # 🔥
+            reply_markup=reply_markup#,
+            #message_effect_id=5104841245755180586  # 🔥
         )
         return
+
 
 
 #=====================================================================================##
@@ -148,17 +183,88 @@ async def start_command(client: Client, message: Message):
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
-    buttons = [
-        [
-            InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=client.invitelink),
-            InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=client.invitelink2),
-        ]
-    ]
+    user_id = message.from_user.id
+
+    # Check subscription status
+    sub1 = await is_subscribed1(None, client, message)
+    sub2 = await is_subscribed2(None, client, message)
+    sub3 = await is_subscribed3(None, client, message)
+    sub4 = await is_subscribed4(None, client, message)
+
+    buttons = []
+
+    # Check all subscription possibilities
+    if not sub1 and not sub2 and not sub3 and not sub4:
+        # User subscribed to none, show all four buttons
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub1 and not sub2 and not sub3 and not sub4:
+        # User subscribed to 1, show buttons for 2, 3, and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub2 and not sub1 and not sub3 and not sub4:
+        # User subscribed to 2, show buttons for 1, 3, and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub3 and not sub1 and not sub2 and not sub4:
+        # User subscribed to 3, show buttons for 1, 2, and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub4 and not sub1 and not sub2 and not sub3:
+        # User subscribed to 4, show buttons for 1, 2, and 3
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+    elif sub1 and sub2 and not sub3 and not sub4:
+        # User subscribed to 1 and 2, show buttons for 3 and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub1 and sub3 and not sub2 and not sub4:
+        # User subscribed to 1 and 3, show buttons for 2 and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub1 and sub4 and not sub2 and not sub3:
+        # User subscribed to 1 and 4, show buttons for 2 and 3
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+    elif sub2 and sub3 and not sub1 and not sub4:
+        # User subscribed to 2 and 3, show buttons for 1 and 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub2 and sub4 and not sub1 and not sub3:
+        # User subscribed to 2 and 4, show buttons for 1 and 3
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+    elif sub3 and sub4 and not sub1 and not sub2:
+        # User subscribed to 3 and 4, show buttons for 1 and 2
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+    elif sub1 and sub2 and sub3 and not sub4:
+        # User subscribed to 1, 2, and 3, show button for 4
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+    elif sub1 and sub2 and sub4 and not sub3:
+        # User subscribed to 1, 2, and 4, show button for 3
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+    elif sub1 and sub3 and sub4 and not sub2:
+        # User subscribed to 1, 3, and 4, show button for 2
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+    elif sub2 and sub3 and sub4 and not sub1:
+        # User subscribed to 2, 3, and 4, show button for 1
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+    elif sub1 and sub2 and sub3 and sub4:
+        # All subscriptions satisfied, no join buttons
+        pass
+
     try:
         buttons.append(
             [
                 InlineKeyboardButton(
-                    text='ʀᴇʟᴏᴀᴅ',
+                    text='• ᴛʀʏ ᴀɢᴀɪɴ •',
                     url=f"https://t.me/{client.username}?start={message.command[1]}"
                 )
             ]
@@ -169,14 +275,15 @@ async def not_joined(client: Client, message: Message):
     await message.reply_photo(
         photo=FORCE_PIC,
         caption=FORCE_MSG.format(
-            first=message.from_user.first_name,
-            last=message.from_user.last_name,
-            username=None if not message.from_user.username else '@' + message.from_user.username,
-            mention=message.from_user.mention,
-            id=message.from_user.id
-        ),
-        reply_markup=InlineKeyboardMarkup(buttons),
-message_effect_id=5104841245755180586)
+        first=message.from_user.first_name,
+        last=message.from_user.last_name,
+        username=None if not message.from_user.username else '@' + message.from_user.username,
+        mention=message.from_user.mention,
+        id=message.from_user.id
+    ),
+    reply_markup=InlineKeyboardMarkup(buttons)#,
+    #message_effect_id=5104841245755180586  # Add the effect ID here
+)
 
 
 #=====================================================================================##
