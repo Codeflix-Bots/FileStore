@@ -26,48 +26,51 @@ TUT_VID = f"{TUT_VID}"
 @Bot.on_message(filters.command('start') & filters.private & subscribed1 & subscribed2 & subscribed3 & subscribed4)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
-    if not await present_user(id):
-        try:
-            await add_user(id)
-        except Exception as e:
-            print(f"Error adding user: {e}")
-            pass
 
-    verify_status = await get_verify_status(id)
+    # Check if user is an admin and treat them as verified
+    if id in ADMINS:
+        verify_status = {
+            'is_verified': True,
+            'verify_token': None,  # Admins don't need a token
+            'verified_time': time.time(),
+            'link': ""
+        }
+    else:
+        verify_status = await get_verify_status(id)
 
-    # If TOKEN is enabled, handle verification logic
-    if TOKEN:
-        if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
-            await update_verify_status(id, is_verified=False)
+        # If TOKEN is enabled, handle verification logic
+        if TOKEN:
+            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+                await update_verify_status(id, is_verified=False)
 
-        if "verify_" in message.text:
-            _, token = message.text.split("_", 1)
-            if verify_status['verify_token'] != token:
-                return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
-            await update_verify_status(id, is_verified=True, verified_time=time.time())
-            if verify_status["link"] == "":
-                reply_markup = None
-            return await message.reply(
-                f"Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}",
-                reply_markup=reply_markup,
-                protect_content=False,
-                quote=True
-            )
+            if "verify_" in message.text:
+                _, token = message.text.split("_", 1)
+                if verify_status['verify_token'] != token:
+                    return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+                await update_verify_status(id, is_verified=True, verified_time=time.time())
+                if verify_status["link"] == "":
+                    reply_markup = None
+                return await message.reply(
+                    f"Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}",
+                    reply_markup=reply_markup,
+                    protect_content=False,
+                    quote=True
+                )
 
-        if not verify_status['is_verified']:
-            token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
-            await update_verify_status(id, verify_token=token, link="")
-            link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
-            btn = [
-                [InlineKeyboardButton("• ᴏᴘᴇɴ ʟɪɴᴋ •", url=link)],
-                [InlineKeyboardButton('• ʜᴏᴡ ᴛᴏ ᴏᴘᴇɴ ʟɪɴᴋ •', url=TUT_VID)]
-            ]
-            return await message.reply(
-                f"<b>Your token has expired. Please refresh your token to continue.\n\nToken Timeout: {get_exp_time(VERIFY_EXPIRE)}\n\nWhat is the token?\n\nThis is an ads token. Passing one ad allows you to use the bot for {get_exp_time(VERIFY_EXPIRE)}</b>",
-                reply_markup=InlineKeyboardMarkup(btn),
-                protect_content=False,
-                quote=True
-            )
+            if not verify_status['is_verified']:
+                token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
+                await update_verify_status(id, verify_token=token, link="")
+                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
+                btn = [
+                    [InlineKeyboardButton("• ᴏᴘᴇɴ ʟɪɴᴋ •", url=link)],
+                    [InlineKeyboardButton('• ʜᴏᴡ ᴛᴏ ᴏᴘᴇɴ ʟɪɴᴋ •', url=TUT_VID)]
+                ]
+                return await message.reply(
+                    f"<b>Your token has expired. Please refresh your token to continue.\n\nToken Timeout: {get_exp_time(VERIFY_EXPIRE)}\n\nWhat is the token?\n\nThis is an ads token. Passing one ad allows you to use the bot for {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    reply_markup=InlineKeyboardMarkup(btn),
+                    protect_content=False,
+                    quote=True
+                )
 
     # Handle normal message flow
     text = message.text
