@@ -191,94 +191,53 @@ async def start_command(client: Client, message: Message):
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
-    user_id = message.from_user.id
-
-    # Check subscription status
-    sub1 = await is_subscribed1(None, client, message)
-    sub2 = await is_subscribed2(None, client, message)
-    sub3 = await is_subscribed3(None, client, message)
-    sub4 = await is_subscribed4(None, client, message)
-
+    # Initialize buttons list
     buttons = []
 
-    # Check all subscription possibilities
-    if not sub1 and not sub2 and not sub3 and not sub4:
-        # User subscribed to none, show all four buttons
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub1 and not sub2 and not sub3 and not sub4:
-        # User subscribed to 1, show buttons for 2, 3, and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub2 and not sub1 and not sub3 and not sub4:
-        # User subscribed to 2, show buttons for 1, 3, and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub3 and not sub1 and not sub2 and not sub4:
-        # User subscribed to 3, show buttons for 1, 2, and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub4 and not sub1 and not sub2 and not sub3:
-        # User subscribed to 4, show buttons for 1, 2, and 3
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-    elif sub1 and sub2 and not sub3 and not sub4:
-        # User subscribed to 1 and 2, show buttons for 3 and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub1 and sub3 and not sub2 and not sub4:
-        # User subscribed to 1 and 3, show buttons for 2 and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub1 and sub4 and not sub2 and not sub3:
-        # User subscribed to 1 and 4, show buttons for 2 and 3
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-    elif sub2 and sub3 and not sub1 and not sub4:
-        # User subscribed to 2 and 3, show buttons for 1 and 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub2 and sub4 and not sub1 and not sub3:
-        # User subscribed to 2 and 4, show buttons for 1 and 3
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-    elif sub3 and sub4 and not sub1 and not sub2:
-        # User subscribed to 3 and 4, show buttons for 1 and 2
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-    elif sub1 and sub2 and sub3 and not sub4:
-        # User subscribed to 1, 2, and 3, show button for 4
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
-    elif sub1 and sub2 and sub4 and not sub3:
-        # User subscribed to 1, 2, and 4, show button for 3
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-    elif sub1 and sub3 and sub4 and not sub2:
-        # User subscribed to 1, 3, and 4, show button for 2
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-    elif sub2 and sub3 and sub4 and not sub1:
-        # User subscribed to 2, 3, and 4, show button for 1
-        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-    elif sub1 and sub2 and sub3 and sub4:
-        # All subscriptions satisfied, no join buttons
-        pass
+    # Check if the first and second channels are both set
+    if FORCE_SUB_CHANNEL1 and FORCE_SUB_CHANNEL2:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=client.invitelink1),
+            InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink2),
+        ])
+    # Check if only the first channel is set
+    elif FORCE_SUB_CHANNEL1:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ•", url=client.invitelink1)
+        ])
+    # Check if only the second channel is set
+    elif FORCE_SUB_CHANNEL2:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ•", url=client.invitelink2)
+        ])
 
+    # Check if the third and fourth channels are set
+    if FORCE_SUB_CHANNEL3 and FORCE_SUB_CHANNEL4:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ", url=client.invitelink3),
+            InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink4),
+        ])
+    # Check if only the first channel is set
+    elif FORCE_SUB_CHANNEL3:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ•", url=client.invitelink3)
+        ])
+    # Check if only the second channel is set
+    elif FORCE_SUB_CHANNEL4:
+        buttons.append([
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ•", url=client.invitelink4)
+        ])
+
+    # Append "Try Again" button if the command has a second argument
     try:
-        buttons.append(
-            [
-                InlineKeyboardButton(
-                    text='• ᴛʀʏ ᴀɢᴀɪɴ •',
-                    url=f"https://t.me/{client.username}?start={message.command[1]}"
-                )
-            ]
-        )
+        buttons.append([
+            InlineKeyboardButton(
+                text="ʀᴇʟᴏᴀᴅ",
+                url=f"https://t.me/{client.username}?start={message.command[1]}"
+            )
+        ])
     except IndexError:
-        pass
+        pass  # Ignore if no second argument is present
 
     await message.reply_photo(
         photo=FORCE_PIC,
