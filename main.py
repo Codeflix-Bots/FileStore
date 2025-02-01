@@ -1,3 +1,3 @@
 from bot import Bot
 
-Bot().run()
+Bot().run()  # ✅ FIXED: Removed 'use_qr' argument
