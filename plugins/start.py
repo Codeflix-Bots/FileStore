@@ -157,7 +157,7 @@ async def start_command(client: Client, message: Message):
                     else None
                 )
                 keyboard = InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Get File Again!", url=reload_url)]]
+                    [[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]
                 ) if reload_url else None
 
                 await notification_msg.edit(
@@ -171,8 +171,8 @@ async def start_command(client: Client, message: Message):
             [
 
     [
-                    InlineKeyboardButton("⚡️ ᴀʙᴏᴜᴛ", callback_data = "about"),
-                    InlineKeyboardButton('🍁 sᴇʀɪᴇsғʟɪx', url='https://t.me/Team_Netflix/40')
+                    InlineKeyboardButton("𝗔𝗯𝗼𝘂𝘁", callback_data = "about"),
+                    InlineKeyboardButton('𝗖𝗵𝗮𝗻𝗻𝗲𝗹𝘀', url='https://t.me/nova_flix')
 
     ]
             ]
