@@ -320,3 +320,26 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
+
+
+
+
+#=====================================================================================##
+#......... RESTART COMMAND FOR RESTARTING BOT .......#
+#=====================================================================================##
+
+@Bot.on_message(filters.command('restart') & filters.private & filters.user(ADMINS))
+async def restart_bot(client: Client, message: Message):
+    print("Restarting bot...")
+    msg = await message.reply(text=f"<b><i><blockquote>⚠️ {client.name} ɢᴏɪɴɢ ᴛᴏ Rᴇsᴛᴀʀᴛ...</blockquote></i></b>")
+    try:
+        await asyncio.sleep(6)  # Wait for 6 seconds before restarting
+        await msg.delete()
+        args = [sys.executable, "main.py"]  # Adjust this if your start file is named differently
+        os.execl(sys.executable, *args)
+    except Exception as e:
+        print(f"Error occured while Restarting the bot: {e}")
+        return await msg.edit_text(f"<b><i>! Eʀʀᴏʀ, Cᴏɴᴛᴀᴄᴛ ᴅᴇᴠᴇʟᴏᴘᴇʀ ᴛᴏ sᴏʟᴠᴇ ᴛʜᴇ ɪssᴜᴇs @metaUi</i></b>\n<blockquote expandable><b>Rᴇᴀsᴏɴ:</b> {e}</blockquote>")
+    # Optionally, you can add cleanup tasks here
+    #subprocess.Popen([sys.executable, "main.py"])  # Adjust this if your start file is named differently
+    #sys.exit()
