@@ -61,18 +61,11 @@ ABOUT_TXT = "<b><blockquote>🚀 ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ: <a href=
 
 START_MSG = os.environ.get("START_MESSAGE", "<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...\n\nI'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂\n\n🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>")
 try:
-    import os
-
-ADMINS = [7328629001]  # Only your admin ID
-
-try:
-    # Remove the extra default admin list
-    for x in (os.environ.get("ADMINS", "").split()):
+   ADMINS=[7328629001]
+    for x in (os.environ.get("ADMINS", "5115691197 6273945163 6103092779 5231212075").split()):
         ADMINS.append(int(x))
-
 except ValueError:
-    raise Exception("Your Admins list does not contain valid integers.")
-
+        raise Exception("Your Admins list does not contain valid integers.")
 #Force sub message 
 FORCE_MSG = os.environ.get("FORCE_SUB_MESSAGE", "ʜᴇʟʟᴏ {first}\n\n<b>ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴏɴ ʀᴇʟᴏᴀᴅ button ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜰɪʟᴇ.</b>")
 
