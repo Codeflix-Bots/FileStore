@@ -28,7 +28,7 @@ DB_URI = os.environ.get("DATABASE_URL", "")
 DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 
 #Time in seconds for message delete, put 0 to never delete
-TIME = int(os.environ.get("TIME", "10"))
+TIME = int(os.environ.get("TIME", "600"))
 
 
 #force sub channel id, if you want enable force sub
@@ -41,11 +41,11 @@ FORCE_SUB_CHANNEL4 = int(os.environ.get("FORCE_SUB_CHANNEL4", "0"))#put 0 to dis
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
 START_PIC = os.environ.get("START_PIC", "https://w.wallhaven.cc/full/6d/wallhaven-6d9qpl.png")
-FORCE_PIC = os.environ.get("FORCE_PIC", "https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg")
+FORCE_PIC = os.environ.get("FORCE_PIC", "https://w.wallhaven.cc/full/gp/wallhaven-gpoovd.jpg")
 
 # Turn this feature on or off using True or False put value inside  ""
 # TRUE for yes FALSE if no 
-TOKEN = True if os.environ.get('TOKEN', "True") == "True" else False 
+TOKEN = True if os.environ.get('TOKEN', "False") == "True" else False 
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "publicearn.online")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "adabe1c0675be8ffc5ccbc84a9a65bc5a5d3ec69")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 600)) # Add time in seconds
@@ -53,10 +53,10 @@ IS_VERIFY = os.environ.get("IS_VERIFY", "True")
 TUT_VID = os.environ.get("TUT_VID","https://t.me/hwdownload/3")
 
 
-HELP_TXT = "<b><blockquote>ᴛʜɪs ɪs ᴀɴ ғɪʟᴇ ᴛᴏ ʟɪɴᴋ ʙᴏᴛ ᴡᴏʀᴋ ғᴏʀ @otakuflix_network\n\n❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n├/start : sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ\n├/about : ᴏᴜʀ Iɴғᴏʀᴍᴀᴛɪᴏɴ\n└/help : ʜᴇʟᴘ ʀᴇʟᴀᴛᴇᴅ ʙᴏᴛ\n\n sɪᴍᴘʟʏ ᴄʟɪᴄᴋ ᴏɴ ʟɪɴᴋ ᴀɴᴅ sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ ᴊᴏɪɴ ʙᴏᴛʜ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴛʜᴀᴛs ɪᴛ.....!\n\n ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href=https://t.me/cosmic_freak>sᴜʙᴀʀᴜ</a></blockquote></b>"
+HELP_TXT = HELP_TXT = "<b><blockquote>ᴛʜɪs ɪs ᴀ ғɪʟᴇ ᴛᴏ ʟɪɴᴋ ʙᴏᴛ ᴡᴏʀᴋ ғᴏʀ @cypherixsocity\n\n❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n├ /start : sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ\n├ /about : ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ᴛʜᴇ ʙᴏᴛ\n└ /help : ɢᴇᴛ ʜᴇʟᴘ ʀᴇʟᴀᴛᴇᴅ ᴛᴏ ʙᴏᴛ\n\n 🔹 sɪᴍᴘʟʏ ᴄʟɪᴄᴋ ᴏɴ ᴛʜᴇ ʟɪɴᴋ, sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ, ᴊᴏɪɴ ᴛʜᴇ ʀᴇǫᴜɪʀᴇᴅ ᴄʜᴀɴɴᴇʟs, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ!\n\n 🔹 ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href=https://t.me/cypherixsocity>ᴄʏᴘʜᴇʀɪx sᴏᴄɪᴛʏ</a></blockquote></b>"
 
 
-ABOUT_TXT = "<b><blockquote>◈ ᴄʀᴇᴀᴛᴏʀ: <a href=https://t.me/cosmic_freak>subaru</a>\n◈ ꜰᴏᴜɴᴅᴇʀ ᴏꜰ : <a href=https://t.me/otakuflix_network>ᴏᴛᴀᴋᴜғʟɪx ɴᴇᴛᴡᴏʀᴋ</a>\n◈ ᴀɴɪᴍᴇ ᴄʜᴀɴɴᴇʟ : <a href=https://t.me/anime_cruise_netflix>ᴀɴɪᴍᴇ ᴄʀᴜɪsᴇ</a>\n◈ sᴇʀɪᴇs ᴄʜᴀɴɴᴇʟ : <a href=https://t.me/webseries_flix>ᴡᴇʙsᴇʀɪᴇs ғʟɪx</a>\n◈ ᴀᴅᴜʟᴛ ᴍᴀɴʜᴡᴀ : <a href=https://t.me/pornhwa_flix>ᴘᴏʀɴʜᴡᴀs</a>\n◈ ᴅᴇᴠᴇʟᴏᴘᴇʀ : <a href=https://t.me/cosmic_freak>subaru</a></blockquote></b>"
+ABOUT_TXT = ABOUT_TXT = "<b><blockquote>🚀 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ <a href=https://t.me/cypherixsocity>ᴄʏᴘʜᴇʀɪx sᴏᴄɪᴛʏ</a> – ᴡʜᴇʀᴇ ᴡᴇ ᴛᴜʀɴ ᴄᴏғғᴇᴇ ɪɴᴛᴏ ᴄᴏᴅᴇ & ᴍᴇᴍᴇs ɪɴᴛᴏ ᴄᴏᴜʀsᴇs! ☕💻\n\n👨‍💻 ᴡʜᴀᴛ ᴡᴇ ᴅᴏ:\n✔ ᴡᴇʙ ᴅᴇᴠᴇʟᴏᴘᴍᴇɴᴛ 🖥️\n✔ ᴇᴅɪᴛɪɴɢ & ᴘʀᴏᴅᴜᴄᴛɪᴏɴ 🎬\n✔ ᴄʏʙᴇʀsᴇᴄᴜʀɪᴛʏ & ᴛᴇᴄʜ ꜰᴜɴ 🤖\n✔ ᴄᴏᴜʀsᴇs ᴛʜᴀᴛ ᴀᴄᴛᴜᴀʟʟʏ ᴍᴀᴋᴇ ʏᴏᴜ sᴏᴜɴᴅ sᴍᴀʀᴛ 😆\n\n🤣 ʜᴇʀᴇ’ꜱ ᴡʜʏ ʏᴏᴜ ꜱʜᴏᴜʟᴅ ᴊᴏɪɴ:\n❌ ᴡᴇ ᴅᴏɴ'ᴛ ᴘʀᴏᴍɪsᴇ ʏᴏᴜ'ʟʟ ʙᴇᴄᴏᴍᴇ ᴇʟᴏɴ ᴍᴜꜱᴋ...\n✅ ʙᴜᴛ ʏᴏᴜ ᴡɪʟʟ ʟᴇᴀʀɴ ᴄᴏᴅɪɴɢ, ᴄʏʙᴇʀsᴇᴄ, & ᴠɪᴅᴇᴏ ᴇᴅɪᴛɪɴɢ ᴡɪᴛʜ ᴄᴏᴏʟ ᴘᴇᴏᴘʟᴇ! 😎\n\n📢 ᴊᴏɪɴ ɴᴏᴡ, ᴏʀ ʀᴇɢʀᴇᴛ ɪᴛ ᴡʜᴇɴ ʏᴏᴜ’ʀᴇ ᴛʀʏɪɴɢ ᴛᴏ ɢᴏᴏɢʟᴇ “ʜᴏᴡ ᴛᴏ ᴍᴀᴋᴇ ᴀ ᴡᴇʙsɪᴛᴇ” ᴀᴛ 3ᴀᴍ! 😂</blockquote></b>"
 
 
 START_MSG = os.environ.get("START_MESSAGE",
