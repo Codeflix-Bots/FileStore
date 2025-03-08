@@ -28,7 +28,7 @@ DB_URI = os.environ.get("DATABASE_URL", "")
 DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 
 #Time in seconds for message delete, put 0 to never delete
-TIME = int(os.environ.get("TIME", "0"))
+TIME = int(os.environ.get("TIME", "10"))
 
 
 #force sub channel id, if you want enable force sub
@@ -40,12 +40,12 @@ FORCE_SUB_CHANNEL4 = int(os.environ.get("FORCE_SUB_CHANNEL4", "0"))#put 0 to dis
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
-START_PIC = os.environ.get("START_PIC", "https://telegra.ph/file/ec17880d61180d3312d6a.jpg")
+START_PIC = os.environ.get("START_PIC", "https://telegra.ph/file/cad7038fe82e47f79c609.jpg")
 FORCE_PIC = os.environ.get("FORCE_PIC", "https://telegra.ph/file/e292b12890b8b4b9dcbd1.jpg")
 
 # Turn this feature on or off using True or False put value inside  ""
 # TRUE for yes FALSE if no 
-TOKEN = True if os.environ.get('TOKEN', "False") == "True" else False 
+TOKEN = True if os.environ.get('TOKEN', "True") == "True" else False 
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "publicearn.online")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "adabe1c0675be8ffc5ccbc84a9a65bc5a5d3ec69")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 600)) # Add time in seconds
@@ -59,13 +59,13 @@ HELP_TXT = "<b><blockquote>🚀 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ғɪʟᴇ �
 ABOUT_TXT = "<b><blockquote>🚀 ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ: <a href='https://t.me/cypherixsocity'>Cypherix Society</a></blockquote></b>"
 
 
-START_MSG = os.environ.get("START_MESSAGE", "<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...\n\nI'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂\n\n🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>")
-try:
-   ADMINS=[6376328008]
+START_MSG = os.environ.get("START_MESSAGE", "<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...\n\nI'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂\n\n🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>")try:
+    ADMINS=[6376328008]
     for x in (os.environ.get("ADMINS", "5115691197 6273945163 6103092779 5231212075").split()):
         ADMINS.append(int(x))
 except ValueError:
         raise Exception("Your Admins list does not contain valid integers.")
+
 #Force sub message 
 FORCE_MSG = os.environ.get("FORCE_SUB_MESSAGE", "ʜᴇʟʟᴏ {first}\n\n<b>ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʜᴇɴ ᴄʟɪᴄᴋ ᴏɴ ʀᴇʟᴏᴀᴅ button ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜰɪʟᴇ.</b>")
 
@@ -82,7 +82,7 @@ BOT_STATS_TEXT = "<b>BOT UPTIME</b>\n{uptime}"
 USER_REPLY_TEXT = "ʙᴀᴋᴋᴀ ! ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ꜱᴇɴᴘᴀɪ!!"
 
 ADMINS.append(OWNER_ID)
-ADMINS.append(6376328008)
+ADMINS.append(6497757690)
 
 LOG_FILE_NAME = "filesharingbot.txt"
 
