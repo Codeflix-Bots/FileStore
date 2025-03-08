@@ -59,12 +59,12 @@ ABOUT_TXT = "<b><blockquote>🚀 ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ: <a href=
 
 import os
 
-START_MSG = os.environ.get("START_MESSAGE", """<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...
+START_MSG = """<b>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...
 
-I'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. 
+I'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ.
 ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂
 
-🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>""") 
+🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</b>"""
 
 try:
       ADMINS=[6376328008]
