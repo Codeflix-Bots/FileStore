@@ -57,9 +57,16 @@ HELP_TXT = "<b><blockquote>🚀 ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴛʜᴇ ғɪʟᴇ �
 
 ABOUT_TXT = "<b><blockquote>🚀 ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ: <a href=\"https://t.me/cypherixsocity\">Cypherix Society</a></blockquote></b>"
 
-START_MSG = os.environ.get("START_MESSAGE", "<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...\n\nI'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂\n\n🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>")try:
-  
-   try:
+import os
+
+START_MSG = os.environ.get("START_MESSAGE", """<b><blockquote>👋 ᴡᴇʟᴄᴏᴍᴇ, {first}...
+
+I'ᴍ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ ᴠᴇɴᴅɪɴɢ ᴍᴀᴄʜɪɴᴇ. ᴅʀᴏᴘ ᴀ ʟɪɴᴋ, ɢᴇᴛ ᴀ ғɪʟᴇ. 
+ɴᴏ sᴍᴀʟʟ ᴛᴀʟᴋ—ɪ’ᴍ ɴᴏᴛ ʏᴏᴜʀ ᴇx! ❌😂
+
+🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>""") 
+
+try:
       ADMINS=[6376328008]
     for x in (os.environ.get("ADMINS", "5115691197 6273945163 6103092779 5231212075").split()):
         ADMINS.append(int(x))
