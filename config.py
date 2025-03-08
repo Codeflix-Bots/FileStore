@@ -28,7 +28,7 @@ DB_URI = os.environ.get("DATABASE_URL", "")
 DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 
 #Time in seconds for message delete, put 0 to never delete
-TIME = int(os.environ.get("TIME", "600"))
+TIME = int(os.environ.get("TIME", "3600"))
 
 
 #force sub channel id, if you want enable force sub
