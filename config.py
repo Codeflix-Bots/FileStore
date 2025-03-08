@@ -45,7 +45,7 @@ FORCE_PIC = os.environ.get("FORCE_PIC", "https://w.wallhaven.cc/full/gp/wallhave
 
 # Turn this feature on or off using True or False put value inside  ""
 # TRUE for yes FALSE if no 
-TOKEN = True if os.environ.get('TOKEN', "False") == "True" else False 
+TOKEN = True if os.environ.get('TOKEN', "False")
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "publicearn.online")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "adabe1c0675be8ffc5ccbc84a9a65bc5a5d3ec69")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 600)) # Add time in seconds
