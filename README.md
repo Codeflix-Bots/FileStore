@@ -19,9 +19,8 @@
 ## ғᴇᴀᴛᴜʀᴇs
 - Fully customisable.
 - Multi Force Sub Channels 
-- Awesome File Auto Delete.
+- File Auto Delete.
 - Get File Again button.
-- You Can Directly Change Forcesub Channels and Admins Through Commands 
 - Customisable welcome & Forcesub messages.
 - Token Verification Feature On/Off
 - Can be deployed on heroku directly.
