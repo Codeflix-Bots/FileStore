@@ -30,18 +30,6 @@
 - More Features Coming Soon...
 </details>
 
-<details><summary><b> - ᴀᴅᴍɪɴ ᴀɴᴅ ᴜsᴇʀs ᴄᴏᴍᴍᴀɴᴅs :</b></summary>
-  
-## ᴀᴅᴍɪɴ ᴀɴᴅ ᴜsᴇʀs ᴄᴏᴍᴍᴀɴᴅs
-- [x] start - ꜱᴛᴀʀᴛ ᴍᴇ...
-- [x] batch - create link for more than one posts
-- [x] genlink - create link for one post
-- [x] users - view bot statistics
-- [x] broadcast - broadcast any messages to bot users
-- [x] dbroadcast - broadcast any messages with auto delete.
-- [x] stats - checking your bot uptime
-</details>
-
 <details><summary><b> - ᴠᴀʀɪᴀʙʟᴇs :</b></summary>
   
 ## ᴠᴀʀɪᴀʙʟᴇs
@@ -78,6 +66,7 @@
 /genlink - create link for one post
 /users - view bot statistics
 /broadcast - broadcast any messages to bot users
+/dbroadcast - broadcast any messages with auto delete.
 /stats - checking your bot uptime
 ```
 
