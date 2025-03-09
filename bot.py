@@ -45,7 +45,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL1 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL1}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/cypherixsocity")
                 sys.exit()
         if FORCE_SUB_CHANNEL2:
             try:
@@ -58,7 +58,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL2 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL2}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/cypherixsocity")
                 sys.exit()
         if FORCE_SUB_CHANNEL3:
             try:
@@ -71,7 +71,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL3 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL3}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/cypherixsocity")
                 sys.exit()
         if FORCE_SUB_CHANNEL4:
             try:
@@ -84,7 +84,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL4 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL4}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/cypherixsocity")
                 sys.exit()
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
@@ -94,11 +94,11 @@ class Bot(Client):
         except Exception as e:
             self.LOGGER(__name__).warning(e)
             self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
-            self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+            self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/cypherixsocity")
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/weebs_support")
+        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhhttps://t.me/cypherixsocity")
         self.LOGGER(__name__).info(f"""       
 
 
@@ -112,7 +112,7 @@ class Bot(Client):
 
         self.set_parse_mode(ParseMode.HTML)
         self.username = usr_bot_me.username
-        self.LOGGER(__name__).info(f"Bot Running..! Made by @Cypherixsocity")   
+        self.LOGGER(__name__).info(f"Bot Running..! Modify by @Cypherixsocity")   
 
         # Start Web Server
         app = web.AppRunner(await web_server())
@@ -131,7 +131,7 @@ class Bot(Client):
         """Run the bot."""
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.start())
-        self.LOGGER(__name__).info("Bot is now running. Thanks to @rohit_1888")
+        self.LOGGER(__name__).info("Bot is now running. Thanks to @cypherixsocity")
         try:
             loop.run_forever()
         except KeyboardInterrupt:
