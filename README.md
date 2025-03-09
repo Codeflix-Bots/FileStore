@@ -14,8 +14,37 @@
 
  ━━━━━━━━━━━━━━━━━
 
-### Variables
+<details><summary><b> - ғᴇᴀᴛᴜʀᴇs:</b></summary>
+  
+## ғᴇᴀᴛᴜʀᴇs
+- Fully customisable.
+- Multi Force Sub Channels 
+- Awesome File Auto Delete.
+- Get File Again button.
+- You Can Directly Change Forcesub Channels and Admins Through Commands 
+- Customisable welcome & Forcesub messages.
+- Token Verification Feature On/Off
+- Can be deployed on heroku directly.
+- Can be deployed on Koyeb Either
 
+- More Features Coming Soon...
+</details>
+
+<details><summary><b> - ᴀᴅᴍɪɴ ᴀɴᴅ ᴜsᴇʀs ᴄᴏᴍᴍᴀɴᴅs :</b></summary>
+  
+## ᴀᴅᴍɪɴ ᴀɴᴅ ᴜsᴇʀs ᴄᴏᴍᴍᴀɴᴅs
+- [x] start - ꜱᴛᴀʀᴛ ᴍᴇ...
+- [x] batch - create link for more than one posts
+- [x] genlink - create link for one post
+- [x] users - view bot statistics
+- [x] broadcast - broadcast any messages to bot users
+- [x] dbroadcast - broadcast any messages with auto delete.
+- [x] stats - checking your bot uptime
+</details>
+
+<details><summary><b> - ᴠᴀʀɪᴀʙʟᴇs :</b></summary>
+  
+## ᴠᴀʀɪᴀʙʟᴇs
 * `API_HASH` Your API Hash from my.telegram.org
 * `APP_ID` Your API ID from my.telegram.org
 * `TG_BOT_TOKEN` Your bot token from @BotFather
@@ -36,9 +65,10 @@
 ### Token Variables
 
 * `IS_VERIFY` = Default : "True" (if you want off : False )
-* `SHORTLINK_URL` = Your shortner Url ( ex. "api.shareus.io")
+* `SHORTLINK_URL` = Your shortner Url ( ex. "inshorturl.com")
 * `SHORTLINK_API` = Your shortner API (ex. "PUIAQBIFrydvLhIzAOeGV8yZppu")
 * `VERIFY_EXPIRE` = ( ex. 86400)) # Add time in seconds
+</details>
 
 ## 𝐶𝑜𝑚𝑚𝑎𝑛𝑑𝑠
 
@@ -52,7 +82,6 @@
 ```
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
-# ᴅᴏɴ'ᴛ ʀᴇᴍᴏᴠᴇ ᴄʀᴇᴅɪᴛ...
 
 </b>⋗  ᴛᴇʟᴇɢʀᴀᴍ - <b>[ᴄᴏᴅᴇғʟɪx ʙᴏᴛs](https://t.me/codeflix_bots)</b>
 
