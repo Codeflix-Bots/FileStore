@@ -66,8 +66,8 @@ START_MSG = os.environ.get("START_MESSAGE",
     "🚀 ᴊᴏɪɴ ᴛʜᴇ ᴜɴᴅᴇʀɢʀᴏᴜɴᴅ: @cypherixsocity</blockquote></b>"
 )
 try:
-    ADMINS=[6376328008]
-    for x in (os.environ.get("ADMINS", "5115691197 6273945163 6103092779 5231212075").split()):
+    ADMINS=[7514451812]
+    for x in (os.environ.get("ADMINS", "7324682529 7514451812").split()):
         ADMINS.append(int(x))
 except ValueError:
         raise Exception("Your Admins list does not contain valid integers.")
@@ -88,7 +88,7 @@ BOT_STATS_TEXT = "<b>BOT UPTIME</b>\n{uptime}"
 USER_REPLY_TEXT = "ʙᴀᴋᴋᴀ ! ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ꜱᴇɴᴘᴀɪ!!"
 
 ADMINS.append(OWNER_ID)
-ADMINS.append(6497757690)
+ADMINS.append(7514451812)
 
 LOG_FILE_NAME = "filesharingbot.txt"
 
