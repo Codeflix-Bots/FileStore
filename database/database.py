@@ -6,7 +6,6 @@ import motor.motor_asyncio
 import time
 import pymongo, os
 from config import DB_URI, DB_NAME
-from bot import Bot
 import logging
 from datetime import datetime, timedelta
 
@@ -15,6 +14,23 @@ database = dbclient[DB_NAME]
 
 logging.basicConfig(level=logging.INFO)
 
+default_verify = {
+    'is_verified': False,
+    'verified_time': 0,
+    'verify_token': "",
+    'link': ""
+}
+
+def new_user(id):
+    return {
+        '_id': id,
+        'verify_status': {
+            'is_verified': False,
+            'verified_time': "",
+            'verify_token': "",
+            'link': ""
+        }
+    }
 
 class Rohit:
 
@@ -25,6 +41,7 @@ class Rohit:
         self.channel_data = self.database['channels']
         self.admins_data = self.database['admins']
         self.user_data = self.database['users']
+        self.sex_data = self.database['sex']
         self.banned_user_data = self.database['banned_user']
         self.autho_user_data = self.database['autho_user']
         self.del_timer_data = self.database['del_timer']
@@ -193,6 +210,56 @@ class Rohit:
         else:
             #print(f"Channel {channel_id} NOT found in the database.")
             return False
+
+
+
+    # VERIFICATION MANAGEMENT
+    async def db_verify_status(self, user_id):
+        user = await self.user_data.find_one({'_id': user_id})
+        if user:
+            return user.get('verify_status', default_verify)
+        return default_verify
+
+    async def db_update_verify_status(self, user_id, verify):
+        await self.user_data.update_one({'_id': user_id}, {'$set': {'verify_status': verify}})
+
+    async def get_verify_status(self, user_id):
+        verify = await self.db_verify_status(user_id)
+        return verify
+
+    async def update_verify_status(self, user_id, verify_token="", is_verified=False, verified_time=0, link=""):
+        current = await self.db_verify_status(user_id)
+        current['verify_token'] = verify_token
+        current['is_verified'] = is_verified
+        current['verified_time'] = verified_time
+        current['link'] = link
+        await self.db_update_verify_status(user_id, current)
+
+    # Set verify count (overwrite with new value)
+    async def set_verify_count(self, user_id: int, count: int):
+        await self.sex_data.update_one({'_id': user_id}, {'$set': {'verify_count': count}}, upsert=True)
+
+    # Get verify count (default to 0 if not found)
+    async def get_verify_count(self, user_id: int):
+        user = await self.sex_data.find_one({'_id': user_id})
+        if user:
+            return user.get('verify_count', 0)
+        return 0
+
+    # Reset all users' verify counts to 0
+    async def reset_all_verify_counts(self):
+        await self.sex_data.update_many(
+            {},
+            {'$set': {'verify_count': 0}} 
+        )
+
+    # Get total verify count across all users
+    async def get_total_verify_count(self):
+        pipeline = [
+            {"$group": {"_id": None, "total": {"$sum": "$verify_count"}}}
+        ]
+        result = await self.sex_data.aggregate(pipeline).to_list(length=1)
+        return result[0]["total"] if result else 0
 
 
 db = Rohit(DB_URI, DB_NAME)
