@@ -53,7 +53,7 @@ async def add_banuser(client: Client, message: Message):
             report += f"⚠️ Iɴᴠᴀʟɪᴅ ID: <code>{uid}</code>\n"
             continue
 
-        if uid_int in await db.admin_exist(uid) or uid_int == OWNER_ID:
+        if uid_int in await db.get_all_admins() or uid_int == OWNER_ID:
             report += f"⛔ Sᴋɪᴘᴘᴇᴅ ᴀᴅᴍɪɴ/ᴏᴡɴᴇʀ ID: <code>{uid_int}</code>\n"
             continue
 
