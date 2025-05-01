@@ -36,7 +36,7 @@ TUT_VID = f"{TUT_VID}"
 
 async def short_url(client: Client, message: Message, base64_string):
     try:
-        prem_link = f"https://t.me/{client.username}?start=yu3elk{base64_string}"
+        prem_link = f"https://t.me/{client.username}?start=yu3elk{base64_string}7"
         short_link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, prem_link)
 
         buttons = [
