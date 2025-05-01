@@ -86,7 +86,7 @@
 <h3>「 ᴏᴛʜᴇʀ ʙʀᴀɴᴄʜᴇs 」
 </h3>
 
-- <b>[ᴛᴏᴋᴇɴ](https://t.me/codeflix_bots)  ➻  [sʜᴏʀᴛɴᴇʀ](https://t.me/codeflix_bots) </b>
+- <b>[ᴛᴏᴋᴇɴ](https://github.com/Codeflix-Bots/FileStore/tree/token)  ➻  [sʜᴏʀᴛɴᴇʀ](https://github.com/Codeflix-Bots/FileStore/tree/Shortner) </b>
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
