@@ -33,7 +33,7 @@
 </details>
 
 
-<details><summary><b> - ᴠᴀʀɪᴀʙʟᴇs :</b></summary>
+<details><summary><b> ᴠᴀʀɪᴀʙʟᴇs :</b></summary>
   
 ## ᴠᴀʀɪᴀʙʟᴇs
 * `API_HASH` Your API Hash from my.telegram.org
