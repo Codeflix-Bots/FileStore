@@ -34,37 +34,12 @@ from database.db_premium import *
 BAN_SUPPORT = f"{BAN_SUPPORT}"
 TUT_VID = f"{TUT_VID}"
 
-async def short_url(client: Client, message: Message, base64_string):
-    try:
-        prem_link = f"https://t.me/{client.username}?start=yu3elk{base64_string}"
-        short_link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, prem_link)
-
-        buttons = [
-            [
-                InlineKeyboardButton(text="ᴅᴏᴡɴʟᴏᴀᴅ", url=short_link),
-                InlineKeyboardButton(text="ᴛᴜᴛᴏʀɪᴀʟ", url=TUT_VID)
-            ],
-            [
-                InlineKeyboardButton(text="ᴘʀᴇᴍɪᴜᴍ", callback_data="premium")
-            ]
-        ]
-
-        await message.reply_photo(
-            photo=SHORTENER_PIC,
-            caption=SHORT_MSG.format(
-            ),
-            reply_markup=InlineKeyboardMarkup(buttons),
-        )
-
-    except IndexError:
-        pass
-
-
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message: Message):
     user_id = message.from_user.id
     id = message.from_user.id
     is_premium = await is_premium_user(id)
+
 
     # Check if user is banned
     banned_users = await db.get_ban_users()
@@ -77,12 +52,63 @@ async def start_command(client: Client, message: Message):
             )
         )
 
+
+    # Check if user is an admin and treat them as verified
+    if user_id in await db.get_all_admins():
+        verify_status = {
+            'is_verified': True,
+            'verify_token': None, 
+            'verified_time': time.time(),
+            'link': ""
+        }
+    else:
+        verify_status = await db.get_verify_status(id)
+
+        # If TOKEN is enabled, handle verification logic
+        if SHORTLINK_URL or SHORTLINK_API:
+            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+                await db.update_verify_status(user_id, is_verified=False)
+
+            if "verify_" in message.text:
+                _, token = message.text.split("_", 1)
+                if verify_status['verify_token'] != token:
+                    return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+                await db.update_verify_status(id, is_verified=True, verified_time=time.time())
+                
+                current = await db.get_verify_count(id)
+                await db.set_verify_count(id, current + 1)
+                if verify_status["link"] == "":
+                    reply_markup = None
+                return await message.reply(
+                    f"Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}",
+                    reply_markup=reply_markup,
+                    protect_content=False,
+                    quote=True
+                )
+
+            if not verify_status['is_verified'] and not is_premium:
+                token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
+                await db.update_verify_status(id, verify_token=token, link="")
+                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
+                btn = [
+                    [InlineKeyboardButton("• ᴏᴘᴇɴ ʟɪɴᴋ •", url=link), 
+                    InlineKeyboardButton('• ᴛᴜᴛᴏʀɪᴀʟ •', url=TUT_VID)],
+                    [InlineKeyboardButton('• ʙᴜʏ ᴘʀᴇᴍɪᴜᴍ •', callback_data='premium')]
+                ]
+                return await message.reply(
+                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n<b>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ??</b>\n\nᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    reply_markup=InlineKeyboardMarkup(btn),
+                    protect_content=False,
+                    quote=True
+                )
+
     # ✅ Check Force Subscription
     if not await is_subscribed(client, user_id):
+        #await temp.delete()
         return await not_joined(client, message)
 
-    # File auto-delete time in seconds
-    FILE_AUTO_DELETE = await db.get_del_timer()
+    # File auto-delete time in seconds (Set your desired time in seconds here)
+    FILE_AUTO_DELETE = await db.get_del_timer()  # Example: 3600 seconds (1 hour)
 
     # Add user if not already present
     if not await db.present_user(user_id):
@@ -93,21 +119,11 @@ async def start_command(client: Client, message: Message):
 
     # Handle normal message flow
     text = message.text
-
     if len(text) > 7:
         try:
-            basic = text.split(" ", 1)[1]
-            if basic.startswith("yu3elk"):
-                base64_string = basic[6:-1]
-            else:
-                base64_string = basic
-
-            if not is_premium and user_id != OWNER_ID and not basic.startswith("yu3elk"):
-                await short_url(client, message, base64_string)
-                return
-
-        except Exception as e:
-            print(f"Error processing start payload: {e}")
+            base64_string = text.split(" ", 1)[1]
+        except IndexError:
+            return
 
         string = await decode(base64_string)
         argument = string.split("-")
@@ -325,11 +341,11 @@ async def check_plan(client: Client, message: Message):
 
 #=====================================================================================##
 # Command to add premium user
-@Bot.on_message(filters.command('addpremium') & filters.private & admin)
+@Bot.on_message(filters.command('addpaid') & filters.private & admin)
 async def add_premium_user_command(client, msg):
     if len(msg.command) != 4:
         await msg.reply_text(
-            "Usage: /addpaid <user_id> <time_value> <time_unit>\n\n"
+            "Usage: /addpremium <user_id> <time_value> <time_unit>\n\n"
             "Time Units:\n"
             "s - seconds\n"
             "m - minutes\n"
