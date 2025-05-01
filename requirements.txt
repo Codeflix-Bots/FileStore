@@ -1,5 +1,6 @@
 #https://codeload.github.com/KurimuzonAkuma/pyrogram/zip/refs/heads/dev
 pyrofork==2.3.45 
+#pyrogram
 TgCrypto
 pyromod==1.5
 schedule
@@ -15,5 +16,6 @@ python-dotenv
 pytz
 requests
 bs4
+shortzy
 aiofiles
 asyncio
