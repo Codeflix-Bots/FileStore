@@ -16,7 +16,9 @@
 
 
 
-<details><summary><b>ғᴇᴀᴛᴜʀᴇs:</b></summary>
+<details><summary><b>📌 ғᴇᴀᴛᴜʀᴇs:</b></summary>
+
+<b>🚀 Key Features:</b>
 
 • <b>Batch & Custom Batch Links:</b> Create links for one or multiple posts easily using <code>/batch</code> & <code>/custom_batch</code>  
 • <b>Link Generator:</b> Instantly generate direct links with <code>/genlink</code>  
@@ -25,9 +27,10 @@
 • <b>User Management:</b> Ban/unban users and view banlist via <code>/ban</code>, <code>/unban</code>, and <code>/banlist</code>  
 • <b>Multi Force Subscription:</b> Add, delete, and manage multiple Force Sub channels with <code>/addchnl</code>, <code>/delchnl</code>, <code>/listchnl</code>  
 • <b>Admin Control:</b> Add or remove admins with <code>/add_admin</code>, <code>/deladmin</code>, and view list via <code>/admins</code>  
-
+• <b>Premium System:</b> Manage premium users using <code>/addpremium</code>, <code>/remove_premium</code>, <code>/premium_users</code>, <code>/myplan</code>  
 • <b>Bot Analytics:</b> Get stats and uptime via <code>/stats</code>, user info with <code>/users</code>, and database count via <code>/count</code>  
 • <b>Deployment Ready:</b> Easily deploy on <b>Heroku</b> or <b>Koyeb</b> in minutes  
+• <b>Token Verification:</b> Enable or disable optional secure access  
 
 <b>✨ More features & enhancements coming soon...</b>
 </details>
@@ -46,6 +49,11 @@
 * `ADMINS` Optional: A space separated list of user_ids of Admins, they can only create links
 * `START_MESSAGE` Optional: start message of bot, use HTML and <a href='https://github.com/codeflix-bots/filestore/blob/master/README.md#start_message'>fillings</a>
 * `PROTECT_CONTENT` Optional: True if you need to prevent files from forwarding
+
+### Token Variables
+
+* `SHORTLINK_URL` = Your shortner Url ( ex. "inshorturl.com")
+* `SHORTLINK_API` = Your shortner API (ex. "PUIAQBIFrydvLhIzAOeGV8yZppu")
 </details>
 
 ## 𝐶𝑜𝑚𝑚𝑎𝑛𝑑𝑠
@@ -79,6 +87,11 @@
 /add_admin - add a new admin  
 /deladmin - remove an admin  
 /admins - list all current admins  
+/addpremium - grant premium access to a user  
+/premium_users - list all premium users  
+/remove_premium - revoke premium from a user  
+/myplan - check your premium status  
+/count - count shortner clicks  
 ```
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
