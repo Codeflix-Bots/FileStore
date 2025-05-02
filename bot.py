@@ -69,6 +69,7 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
+        scheduler.start()
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
