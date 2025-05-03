@@ -41,7 +41,7 @@ async def daily_reset_task():
         pass  
 
 scheduler.add_job(daily_reset_task, "cron", hour=0, minute=0)
-scheduler.start()
+#scheduler.start()
 
 
 name ="""
@@ -69,6 +69,7 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
+        scheduler.start()
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
