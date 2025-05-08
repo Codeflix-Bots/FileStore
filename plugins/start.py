@@ -329,7 +329,7 @@ async def check_plan(client: Client, message: Message):
 async def add_premium_user_command(client, msg):
     if len(msg.command) != 4:
         await msg.reply_text(
-            "Usage: /addpaid <user_id> <time_value> <time_unit>\n\n"
+            "Usage: /addpremium <user_id> <time_value> <time_unit>\n\n"
             "Time Units:\n"
             "s - seconds\n"
             "m - minutes\n"
