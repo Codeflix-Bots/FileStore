@@ -118,51 +118,50 @@ async def add_force_sub(client: Client, message: Message):
 
     if len(args) != 2:
         return await temp.edit(
-            "<b>Usage:</b> <code>/addchnl -100XXXXXXXXXX</code>\n<b>Add only one channel at a time.</b>",
+            "<b>Usage:</b> <code>/addchnl -100XXXXXXXXXX</code>\n<b>Add only one chat at a time.</b>",
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Close ✖️", callback_data="close")]])
         )
 
     try:
-        channel_id = int(args[1])
+        chat_id = int(args[1])
     except ValueError:
-        return await temp.edit("<b>❌ Invalid Channel ID!</b>")
+        return await temp.edit("<b>❌ Invalid Chat ID!</b>")
 
-    all_channels = await db.show_channels()
-    channel_ids_only = [cid if isinstance(cid, int) else cid[0] for cid in all_channels]
-    if channel_id in channel_ids_only:
-        return await temp.edit(f"<b>Channel already exists:</b> <code>{channel_id}</code>")
+    all_chats = await db.show_channels()
+    chat_ids_only = [cid if isinstance(cid, int) else cid[0] for cid in all_chats]
+    if chat_id in chat_ids_only:
+        return await temp.edit(f"<b>Already exists:</b> <code>{chat_id}</code>")
 
     try:
-        chat = await client.get_chat(channel_id)
+        chat = await client.get_chat(chat_id)
 
-        if chat.type != ChatType.CHANNEL:
-            return await temp.edit("<b>❌ Only public or private channels are allowed.</b>")
+        if chat.type not in [ChatType.CHANNEL, ChatType.SUPERGROUP]:
+            return await temp.edit("<b>❌ Only channels or supergroups are allowed.</b>")
 
         member = await client.get_chat_member(chat.id, "me")
-        print(f"Bot status: {member.status} in chat: {chat.title} ({chat.id})")  # Debug
-
-        # FIXED ENUM COMPARISON
         if member.status not in [ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
-            return await temp.edit("<b>❌ Bot must be an admin in that channel.</b>")
+            return await temp.edit("<b>❌ Bot must be admin in that chat.</b>")
 
-        # Get invite link
+        # Try to generate an invite link
         try:
             link = await client.export_chat_invite_link(chat.id)
         except Exception:
+            # Fallback for username-based public chats
             link = f"https://t.me/{chat.username}" if chat.username else f"https://t.me/c/{str(chat.id)[4:]}"
 
-        await db.add_channel(channel_id)
+        await db.add_channel(chat_id)
         return await temp.edit(
-            f"<b>✅ Force-sub channel added successfully!</b>\n\n"
+            f"<b>✅ Chat added successfully!</b>\n\n"
             f"<b>Name:</b> <a href='{link}'>{chat.title}</a>\n"
-            f"<b>ID:</b> <code>{channel_id}</code>",
+            f"<b>ID:</b> <code>{chat_id}</code>",
             disable_web_page_preview=True
         )
 
     except Exception as e:
         return await temp.edit(
-            f"<b>❌ Failed to add channel:</b>\n<code>{channel_id}</code>\n\n<i>{e}</i>"
+            f"<b>❌ Failed to add chat:</b>\n<code>{chat_id}</code>\n\n<i>{e}</i>"
         )
+        
 
 
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
