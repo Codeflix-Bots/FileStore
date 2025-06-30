@@ -35,32 +35,30 @@ async def add_admins(client: Client, message: Message):
         )
 
     admin_list = ""
+    valid_ids = []
     for id in admins:
         try:
-            id = int(id)
+            id_int = int(id)
         except:
             admin_list += f"<blockquote><b>Invalid ID: <code>{id}</code></b></blockquote>\n"
             continue
 
-        if id in admin_ids:
+        if id_int in admin_ids:
             admin_list += f"<blockquote><b>ID <code>{id}</code> already exists.</b></blockquote>\n"
             continue
 
-        id = str(id)
-        if id.isdigit() and len(id) == 10:
-            admin_list += f"<b><blockquote>(ID: <code>{id}</code>) added.</blockquote></b>\n"
-            check += 1
-        else:
-            admin_list += f"<blockquote><b>Invalid ID: <code>{id}</code></b></blockquote>\n"
+        valid_ids.append(id_int)
+        admin_list += f"<b><blockquote>(ID: <code>{id}</code>) added.</blockquote></b>\n"
+        check += 1
 
-    if check == len(admins):
-        for id in admins:
-            await db.add_admin(int(id))
+    if check == len(valid_ids):
+        for id in valid_ids:
+            await db.add_admin(id)
         await pro.edit(f"<b>✅ Admin(s) added successfully:</b>\n\n{admin_list}", reply_markup=reply_markup)
     else:
         await pro.edit(
-            f"<b>❌ Some errors occurred while adding admins:</b>\n\n{admin_list.strip()}\n\n"
-            "<b><i>Please check and try again.</i></b>",
+            f"<b>⚠️ Some IDs were not added:</b>\n\n{admin_list.strip()}\n\n"
+            "<b><i>Check input and try again.</i></b>",
             reply_markup=reply_markup
         )
 
