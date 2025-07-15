@@ -96,24 +96,12 @@ async def start_command(client: Client, message: Message):
             await temp_msg.delete()
  
         codeflix_msgs = []
-
         for msg in messages:
-            original_caption = msg.caption.html if msg.caption else ""
-            caption = f"{original_caption}\n\n{CUSTOM_CAPTION}" if CUSTOM_CAPTION else original_caption
+            caption = (CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, 
+                                             filename=msg.document.file_name) if bool(CUSTOM_CAPTION) and bool(msg.document)
+                       else ("" if not msg.caption else msg.caption.html))
             reply_markup = msg.reply_markup if DISABLE_CHANNEL_BUTTON else None
-
             try:
-                snt_msg = await msg.copy(
-                    chat_id=message.from_user.id,
-                    caption=caption,
-                    parse_mode=ParseMode.HTML,
-                    reply_markup=reply_markup,
-                    protect_content=PROTECT_CONTENT
-                )
-                await asyncio.sleep(0.5)
-                codeflix_msgs.append(snt_msg)
-            except FloodWait as e:
-                await asyncio.sleep(e.x)
                 copied_msg = await msg.copy(
                     chat_id=message.from_user.id,
                     caption=caption,
@@ -121,40 +109,23 @@ async def start_command(client: Client, message: Message):
                     reply_markup=reply_markup,
                     protect_content=PROTECT_CONTENT
                 )
+                await asyncio.sleep(0.1)
                 codeflix_msgs.append(copied_msg)
-            except:
-                pass
+            except Exception as e:
+                print(f"Failed to send message: {e}")
 
         if FILE_AUTO_DELETE > 0:
             notification_msg = await message.reply(
                 f"<b>Tʜɪs Fɪʟᴇ ᴡɪʟʟ ʙᴇ Dᴇʟᴇᴛᴇᴅ ɪɴ  {get_exp_time(FILE_AUTO_DELETE)}. Pʟᴇᴀsᴇ sᴀᴠᴇ ᴏʀ ғᴏʀᴡᴀʀᴅ ɪᴛ ᴛᴏ ʏᴏᴜʀ sᴀᴠᴇᴅ ᴍᴇssᴀɢᴇs ʙᴇғᴏʀᴇ ɪᴛ ɢᴇᴛs Dᴇʟᴇᴛᴇᴅ.</b>"
             )
-
-            await asyncio.sleep(FILE_AUTO_DELETE)
-
-            for snt_msg in codeflix_msgs:    
-                if snt_msg:
-                    try:    
-                        await snt_msg.delete()  
-                    except Exception as e:
-                        print(f"Error deleting message {snt_msg.id}: {e}")
-
-            try:
-                reload_url = (
-                    f"https://t.me/{client.username}?start={message.command[1]}"
-                    if message.command and len(message.command) > 1
-                    else None
-                )
-                keyboard = InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]
-                ) if reload_url else None
-
-                await notification_msg.edit(
-                    "<b>ʏᴏᴜʀ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ ɪꜱ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ !!\n\nᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ᴅᴇʟᴇᴛᴇᴅ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ 👇</b>",
-                    reply_markup=keyboard
-                )
-            except Exception as e:
-                print(f"Error updating notification with 'Get File Again' button: {e}")
+            reload_url = (
+                f"https://t.me/{client.username}?start={message.command[1]}"
+                if message.command and len(message.command) > 1
+                else None
+            )
+            asyncio.create_task(
+                schedule_auto_delete(client, codeflix_msgs, notification_msg, FILE_AUTO_DELETE, reload_url)
+            )
     else:
         reply_markup = InlineKeyboardMarkup(
             [
@@ -282,3 +253,24 @@ async def not_joined(client: Client, message: Message):
 async def bcmd(bot: Bot, message: Message):        
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("• ᴄʟᴏsᴇ •", callback_data = "close")]])
     await message.reply(text=CMD_TXT, reply_markup = reply_markup, quote= True)
+
+async def schedule_auto_delete(client, codeflix_msgs, notification_msg, file_auto_delete, reload_url):
+    await asyncio.sleep(file_auto_delete)
+    for snt_msg in codeflix_msgs:
+        if snt_msg:
+            try:
+                await snt_msg.delete()
+            except Exception as e:
+                print(f"Error deleting message {snt_msg.id}: {e}")
+
+    try:
+        keyboard = InlineKeyboardMarkup(
+            [[InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=reload_url)]]
+        ) if reload_url else None
+
+        await notification_msg.edit(
+            "<b>ʏᴏᴜʀ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ ɪꜱ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴅᴇʟᴇᴛᴇᴅ !!\n\nᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ᴅᴇʟᴇᴛᴇᴅ ᴠɪᴅᴇᴏ / ꜰɪʟᴇ 👇</b>",
+            reply_markup=keyboard
+        )
+    except Exception as e:
+        print(f"Error updating notification with 'Get File Again' button: {e}")
