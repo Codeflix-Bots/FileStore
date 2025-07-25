@@ -79,6 +79,7 @@
 /add_admin - add a new admin  
 /deladmin - remove an admin  
 /admins - list all current admins  
+/delreq - removed users that left chnl and not getting request fsub
 ```
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
