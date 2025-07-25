@@ -32,6 +32,13 @@ BAN_SUPPORT = f"{BAN_SUPPORT}"
 async def start_command(client: Client, message: Message):
     user_id = message.from_user.id
 
+    # Add user if not already present
+    if not await db.present_user(user_id):
+        try:
+            await db.add_user(user_id)
+        except:
+            pass
+
     # Check if user is banned
     banned_users = await db.get_ban_users()
     if user_id in banned_users:
@@ -49,13 +56,6 @@ async def start_command(client: Client, message: Message):
 
     # File auto-delete time in seconds (Set your desired time in seconds here)
     FILE_AUTO_DELETE = await db.get_del_timer()  # Example: 3600 seconds (1 hour)
-
-    # Add user if not already present
-    if not await db.present_user(user_id):
-        try:
-            await db.add_user(user_id)
-        except:
-            pass
 
     # Handle normal message flow
     text = message.text
