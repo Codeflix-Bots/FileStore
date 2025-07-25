@@ -228,3 +228,71 @@ async def list_force_sub_channels(client: Client, message: Message):
 #
 # All rights reserved.
 #
+
+@Bot.on_message(filters.command('delreq') & filters.private & admin)
+async def delete_requested_users(client, message: Message):
+    if len(message.command) < 2:
+        return await message.reply("⚠️ Usᴀɢᴇ: `/delreq <channel_id>`", quote=True)
+
+    try:
+        channel_id = int(message.command[1])
+    except ValueError:
+        return await message.reply("❌ Iɴᴠᴀʟɪᴅ ᴄʜᴀɴɴᴇʟ ID.", quote=True)
+
+    # Get channel request data
+    channel_data = await db.rqst_fsub_Channel_data.find_one({'_id': channel_id})
+    if not channel_data:
+        return await message.reply("ℹ️ Nᴏ ʀᴇǫᴜᴇsᴛ ᴄʜᴀɴɴᴇʟ ғᴏᴜɴᴅ ғᴏʀ ᴛʜɪs ᴄʜᴀɴɴᴇʟ.", quote=True)
+
+    user_ids = channel_data.get("user_ids", [])
+    if not user_ids:
+        return await message.reply("✅ Nᴏ ᴜsᴇʀs ᴛᴏ ᴘʀᴏᴄᴇss.", quote=True)
+
+    removed = 0
+    skipped = 0
+    left_users = 0
+
+    for user_id in user_ids:
+        try:
+            member = await client.get_chat_member(channel_id, user_id)
+            if member.status in (
+                ChatMemberStatus.MEMBER,
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.OWNER
+            ):
+                skipped += 1  # Still a participant, and in req list
+                continue
+            else:
+                await db.del_req_user(channel_id, user_id)
+                left_users += 1
+        except UserNotParticipant:
+            await db.del_req_user(channel_id, user_id)
+            left_users += 1
+        except Exception as e:
+            print(f"[!] Error checking user {user_id}: {e}")
+            skipped += 1
+
+    for user_id in user_ids:
+        if not await db.req_user_exist(channel_id, user_id):
+            await db.del_req_user(channel_id, user_id)
+            removed += 1
+
+    return await message.reply(
+        f"✅ Cʟᴇᴀɴᴜᴘ ᴄᴏᴍᴘʟᴇᴛᴇᴅ ғᴏʀ ᴄʜᴀɴɴᴇʟ `{channel_id}`\n\n"
+        f"👤 Rᴇᴍᴏᴠᴇᴅ ᴜsᴇʀs ɴᴏᴛ ɪɴ ᴄʜᴀɴɴᴇʟ: `{left_users}`\n"
+        f"🗑️ Rᴇᴍᴏᴠᴇᴅ ʟᴇғᴛᴏᴠᴇʀ ɴᴏɴ-ʀᴇǫᴜᴇsᴛ ᴜsᴇʀs: `{removed}`\n"
+        f"✅ Sᴛɪʟʟ ᴍᴇᴍʙᴇʀs: `{skipped}`",
+        quote=True
+    )
+
+# Don't Remove Credit @CodeFlix_Bots, @rohit_1888
+# Ask Doubt on telegram @CodeflixSupport
+#
+# Copyright (C) 2025 by Codeflix-Bots@Github, < https://github.com/Codeflix-Bots >.
+#
+# This file is part of < https://github.com/Codeflix-Bots/FileStore > project,
+# and is released under the MIT License.
+# Please see < https://github.com/Codeflix-Bots/FileStore/blob/master/LICENSE >
+#
+# All rights reserved.
+#
