@@ -71,7 +71,7 @@ class Bot(Client):
         await super().start()
         scheduler.start()
         usr_bot_me = await self.get_me()
-        self.uptime = datetime.now()
+        self.uptime = get_indian_time()
 
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
