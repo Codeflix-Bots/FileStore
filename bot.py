@@ -4,7 +4,7 @@ import asyncio
 import pyromod.listen
 from pyrogram import Client
 from pyrogram.enums import ParseMode
-import sys
+import sys, pytz
 from datetime import datetime
 #rohit_1888 on Tg
 from config import *
@@ -13,6 +13,12 @@ from config import *
 name ="""
  BY CODEFLIX BOTS
 """
+
+def get_indian_time():
+    """Returns the current time in IST."""
+    ist = pytz.timezone("Asia/Kolkata")
+    return datetime.now(ist)
+
 
 
 class Bot(Client):
@@ -32,7 +38,7 @@ class Bot(Client):
     async def start(self):
         await super().start()
         usr_bot_me = await self.get_me()
-        self.uptime = datetime.now()
+        self.uptime = get_indian_time()
 
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
