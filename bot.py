@@ -1,4 +1,4 @@
-#(©)AnimeYugen
+#(©) Codeflix_Bots
 
 from aiohttp import web
 from plugins import web_server
