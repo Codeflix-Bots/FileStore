@@ -24,16 +24,34 @@ __Use the appropriate button below to add or remove an admin based on your needs
 
 #===============================================================#
 
-@Client.on_message(filters.command("usage"))
+@Client.on_message(filters.command("stats"))
 async def usage_cmd(client: Client, message: Message):
     if not message.from_user.id in client.admins:
-        return await query.answer("This can only be used by Admins")
-    reply = await message.reply("`Extracting all Usage!!`")
+        return await message.reply("✗ ᴛʜɪs ᴄᴀɴ ᴏɴʟʏ ʙᴇ ᴜsᴇᴅ ʙʏ ᴀᴅᴍɪɴs!")
+    
+    reply = await message.reply("<blockquote>›› ᴇxᴛʀᴀᴄᴛɪɴɢ ᴜsᴀɢᴇ ᴅᴀᴛᴀ...</blockquote>")
 
+    # Get total users from database
+    try:
+        total_users_list = await client.mongodb.full_userbase()
+        total_users = len(total_users_list)
+    except Exception as e:
+        total_users = "ᴇʀʀᴏʀ"
+
+    # Bot uptime calculation
+    from datetime import datetime, timedelta
+    uptime_duration = datetime.now() - getattr(client, 'uptime', datetime.now())
+    days = uptime_duration.days
+    hours, remainder = divmod(uptime_duration.seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    uptime_str = f"{days}ᴅ {hours}ʜ {minutes}ᴍ"
+
+    # System stats
     total, used, free = shutil.disk_usage("/")
     total_gb = total / (1024**3)
     used_gb = used / (1024**3)
     free_gb = free / (1024**3)
+    disk_percent = (used / total) * 100
 
     ram = psutil.virtual_memory()
     total_ram = ram.total / (1024**3)
@@ -49,48 +67,72 @@ async def usage_cmd(client: Client, message: Message):
 
     cpu_usage = psutil.cpu_percent(interval=1)
 
-    # Handle network stats safely
+    # Network stats with error handling
     try:
         net_io = psutil.net_io_counters()
         bytes_sent = net_io.bytes_sent / (1024**2)
         bytes_recv = net_io.bytes_recv / (1024**2)
-        net_msg = (
-            f"**📡 Network Usage:**\n"
-            f"• **Uploaded:** `{bytes_sent:.2f} MB`\n"
-            f"• **Downloaded:** `{bytes_recv:.2f} MB`\n\n"
-        )
+        network_status = "✓ ᴀᴠᴀɪʟᴀʙʟᴇ"
+        net_section = f"""<blockquote>›› **ᴜᴘʟᴏᴀᴅᴇᴅ:** `{bytes_sent:.2f} ᴍʙ`
+›› **ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ:** `{bytes_recv:.2f} ᴍʙ`</blockquote>"""
     except PermissionError:
-        net_msg = "**📡 Network Usage:** `Not available on PRoot`\n\n"
+        network_status = "✗ ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ"
+        net_section = "<blockquote>›› **sᴛᴀᴛᴜs:** `ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ᴏɴ ᴘʀᴏᴏᴛ`</blockquote>"
 
     # Bot process usage
-    process = psutil.Process()
-    bot_cpu_usage = process.cpu_percent(interval=1)
-    bot_memory_usage = process.memory_info().rss / (1024**2)
+    try:
+        process = psutil.Process()
+        bot_cpu_usage = process.cpu_percent(interval=1)
+        bot_memory_usage = process.memory_info().rss / (1024**2)
+        bot_status = "✓ ʀᴜɴɴɪɴɢ"
+    except Exception:
+        bot_cpu_usage = 0.0
+        bot_memory_usage = 0.0
+        bot_status = "✗ ᴇʀʀᴏʀ"
 
-    # Final message construction
-    msg = (
-        f"<blockquote>**📊 System Usage Stats:**</blockquote>\n\n"
-        f"**💾 Disk Usage:**\n"
-        f"• **Total:** `{total_gb:.2f} GB`\n"
-        f"• **Used:** `{used_gb:.2f} GB`\n"
-        f"• **Free:** `{free_gb:.2f} GB`\n\n"
-        f"**🖥 RAM Usage:**\n"
-        f"• **Total:** `{total_ram:.2f} GB`\n"
-        f"• **Used:** `{used_ram:.2f} GB` ({ram_percent}%)\n"
-        f"• **Free:** `{free_ram:.2f} GB`\n\n"
-        f"**🔄 Swap Usage:**\n"
-        f"• **Total:** `{total_swap:.2f} GB`\n"
-        f"• **Used:** `{used_swap:.2f} GB` ({swap_percent}%)\n"
-        f"• **Free:** `{free_swap:.2f} GB`\n\n"
-        f"**⚡ CPU Usage:** `{cpu_usage:.2f}%`\n\n"
-        f"{net_msg}"
-        f"**🤖 Bot Resource Usage:**\n"
-        f"• **CPU:** `{bot_cpu_usage:.2f}%`\n"
-        f"• **Memory:** `{bot_memory_usage:.2f} MB`"
-    )
+    # Status indicators based on usage levels
+    disk_status = "✓ ɴᴏʀᴍᴀʟ" if disk_percent < 80 else "✗ ʜɪɢʜ" if disk_percent < 95 else "✗ ᴄʀɪᴛɪᴄᴀʟ"
+    ram_status = "✓ ɴᴏʀᴍᴀʟ" if ram_percent < 80 else "✗ ʜɪɢʜ" if ram_percent < 95 else "✗ ᴄʀɪᴛɪᴄᴀʟ"
+    cpu_status = "✓ ɴᴏʀᴍᴀʟ" if cpu_usage < 80 else "✗ ʜɪɢʜ" if cpu_usage < 95 else "✗ ᴄʀɪᴛɪᴄᴀʟ"
+
+    # Final message construction with enhanced UI
+    msg = f"""<blockquote>✦ sʏsᴛᴇᴍ ᴜsᴀɢᴇ sᴛᴀᴛs</blockquote>
+
+<blockquote><u>**≡ ʙᴏᴛ sᴛᴀᴛɪsᴛɪᴄs:**</u></blockquote>
+<blockquote>›› **ᴛᴏᴛᴀʟ ᴜsᴇʀs:** `{total_users}`
+›› **ʙᴏᴛ sᴛᴀᴛᴜs:** {bot_status}
+›› **ᴜᴘᴛɪᴍᴇ:** `{uptime_str}`
+›› **ᴀᴅᴍɪɴs:** `{len(client.admins)}`</blockquote>
+
+<blockquote><u>**≡ ᴅɪsᴋ ᴜsᴀɢᴇ:**</u></blockquote>
+<blockquote>›› **ᴛᴏᴛᴀʟ:** `{total_gb:.2f} ɢʙ`
+›› **ᴜsᴇᴅ:** `{used_gb:.2f} ɢʙ` ({disk_percent:.1f}%)
+›› **ꜰʀᴇᴇ:** `{free_gb:.2f} ɢʙ`
+›› **sᴛᴀᴛᴜs:** {disk_status}</blockquote>
+
+<blockquote><u>**≡ ʀᴀᴍ ᴜsᴀɢᴇ:**</u></blockquote>
+<blockquote>›› **ᴛᴏᴛᴀʟ:** `{total_ram:.2f} ɢʙ`
+›› **ᴜsᴇᴅ:** `{used_ram:.2f} ɢʙ` ({ram_percent:.1f}%)
+›› **ꜰʀᴇᴇ:** `{free_ram:.2f} ɢʙ`
+›› **sᴛᴀᴛᴜs:** {ram_status}</blockquote>
+
+<blockquote><u>**≡ sᴡᴀᴘ ᴜsᴀɢᴇ:**</u></blockquote>
+<blockquote>›› **ᴛᴏᴛᴀʟ:** `{total_swap:.2f} ɢʙ`
+›› **ᴜsᴇᴅ:** `{used_swap:.2f} ɢʙ` ({swap_percent:.1f}%)
+›› **ꜰʀᴇᴇ:** `{free_swap:.2f} ɢʙ`</blockquote>
+
+<blockquote><u>**≡ ᴄᴘᴜ & ɴᴇᴛᴡᴏʀᴋ:**</u></blockquote>
+<blockquote>›› **ᴄᴘᴜ ᴜsᴀɢᴇ:** `{cpu_usage:.2f}%` {cpu_status}
+›› **ɴᴇᴛᴡᴏʀᴋ:** {network_status}</blockquote>
+{net_section}
+
+<blockquote><u>**≡ ʙᴏᴛ ʀᴇsᴏᴜʀᴄᴇ ᴜsᴀɢᴇ:**</u></blockquote>
+<blockquote>›› **ᴄᴘᴜ:** `{bot_cpu_usage:.2f}%`
+›› **ᴍᴇᴍᴏʀʏ:** `{bot_memory_usage:.2f} ᴍʙ`</blockquote>
+
+<blockquote>**• ᴜsᴇ ᴛʜɪs ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ ᴛᴏ ᴍᴏɴɪᴛᴏʀ ʏᴏᴜʀ ʙᴏᴛ's ᴘᴇʀꜰᴏʀᴍᴀɴᴄᴇ!**</blockquote>"""
 
     await reply.edit_text(msg)
-
 #===============================================================#
 
 @Client.on_callback_query(filters.regex("^add_admin$"))
