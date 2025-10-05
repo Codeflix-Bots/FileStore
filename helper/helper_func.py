@@ -206,55 +206,78 @@ async def is_bot_admin(client, channel_id):
 #===============================================================#
 
 async def check_subscription(client, user_id):
-    """Check if a user is subscribed to all required channels."""
+    """Enhanced subscription check with better request channel handling."""
     statuses = {}
 
+    # Ensure user exists in database
+    if not await client.mongodb.present_user(user_id):
+        await client.mongodb.add_user(user_id)
+
     for channel_id, (channel_name, channel_link, request, timer) in client.fsub_dict.items():
-        if request:
-            # For request channels, check both database record and actual membership
-            has_request = await client.mongodb.has_submitted_join_request(user_id, channel_id)
-            if has_request:
-                try:
-                    # Also verify actual membership status
-                    user = await client.get_chat_member(channel_id, user_id)
-                    actual_status = user.status
+        try:
+            # Get actual membership status first
+            user = await client.get_chat_member(channel_id, user_id)
+            actual_status = user.status
+            
+            # If user is already a member, admin, or owner
+            if actual_status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
+                await client.mongodb.update_fsub_status(user_id, channel_id, "joined")
+                await client.mongodb.add_channel_user(channel_id, user_id)
+                
+                # If there was a pending join request, mark it as approved
+                if request and await client.mongodb.has_submitted_join_request(user_id, channel_id):
+                    await client.mongodb.update_join_request_status(user_id, channel_id, "approved")
+                
+                statuses[channel_id] = actual_status
+                continue
+            
+            # User is not a member
+            if request:
+                # For request channels, check if user has submitted a request
+                has_request = await client.mongodb.has_submitted_join_request(user_id, channel_id)
+                if has_request:
+                    # User has submitted request but not yet a member
+                    request_status = await client.mongodb.get_join_request_status(user_id, channel_id)
                     
-                    # Update fsub status based on actual membership
-                    if actual_status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
-                        await client.mongodb.update_fsub_status(user_id, channel_id, "joined")
-                        statuses[channel_id] = actual_status
-                    else:
-                        # User left the channel, update status and remove request record
+                    if request_status == "approved":
+                        # Request was approved but user still not in channel
+                        # This means user might have left after approval
                         await client.mongodb.update_fsub_status(user_id, channel_id, "left")
                         await client.mongodb.remove_join_request(user_id, channel_id)
                         statuses[channel_id] = ChatMemberStatus.BANNED
-                except UserNotParticipant:
-                    # User left the channel, clean up records
-                    await client.mongodb.update_fsub_status(user_id, channel_id, "left")
-                    await client.mongodb.remove_join_request(user_id, channel_id)
+                    else:
+                        # Request is still pending, allow user to proceed
+                        await client.mongodb.update_fsub_status(user_id, channel_id, "request_submitted")
+                        statuses[channel_id] = ChatMemberStatus.MEMBER  # Treat as subscribed for request channels
+                else:
+                    # No request submitted yet for request channel
+                    await client.mongodb.update_fsub_status(user_id, channel_id, "not_requested")
                     statuses[channel_id] = ChatMemberStatus.BANNED
-                except Exception as e:
-                    client.LOGGER(__name__, client.name).warning(f"Error checking request channel {channel_name}: {e}")
-                    statuses[channel_id] = None
-                continue
-        
-        try:
-            user = await client.get_chat_member(channel_id, user_id)
-            actual_status = user.status
-            statuses[channel_id] = actual_status
-            
-            # Update fsub status in database
-            if actual_status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
-                await client.mongodb.update_fsub_status(user_id, channel_id, "joined")
             else:
+                # Regular channel (not request), user must be a member
                 await client.mongodb.update_fsub_status(user_id, channel_id, "left")
+                await client.mongodb.remove_channel_user(channel_id, user_id)
+                statuses[channel_id] = ChatMemberStatus.BANNED
                 
         except UserNotParticipant:
-            statuses[channel_id] = ChatMemberStatus.BANNED
-            await client.mongodb.update_fsub_status(user_id, channel_id, "left")
-            # Clean up any old request records
+            # User is not in the channel
             if request:
-                await client.mongodb.remove_join_request(user_id, channel_id)
+                # For request channels, check if user has submitted a request
+                has_request = await client.mongodb.has_submitted_join_request(user_id, channel_id)
+                if has_request:
+                    # User has submitted request, allow them to proceed
+                    await client.mongodb.update_fsub_status(user_id, channel_id, "request_submitted")
+                    statuses[channel_id] = ChatMemberStatus.MEMBER  # Treat as subscribed for request channels
+                else:
+                    # No request submitted yet
+                    await client.mongodb.update_fsub_status(user_id, channel_id, "not_requested")
+                    statuses[channel_id] = ChatMemberStatus.BANNED
+            else:
+                # Regular channel, user must join
+                await client.mongodb.update_fsub_status(user_id, channel_id, "left")
+                await client.mongodb.remove_channel_user(channel_id, user_id)
+                statuses[channel_id] = ChatMemberStatus.BANNED
+                
         except Forbidden:
             client.LOGGER(__name__, client.name).warning(f"Bot lacks permission for {channel_name}.")
             statuses[channel_id] = None
@@ -304,37 +327,80 @@ def force_sub(func):
         c = 0
         for channel_id, (channel_name, channel_link, request, timer) in client.fsub_dict.items():
             status = statuses.get(channel_id, None)
-            status_of_user = "Jᴏɪɴᴇᴅ ✅" if status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER} else "Nᴏᴛ Jᴏɪɴᴇᴅ ❌"
             c += 1
-            channels_message += f"{c}. <code>{channel_name}</code> - <b>{status_of_user}</b>\n"
+            
+            # Enhanced status display for request channels
+            if status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
+                status_text = "Jᴏɪɴᴇᴅ ✅"
+            elif request and await client.mongodb.has_submitted_join_request(user_id, channel_id):
+                request_status = await client.mongodb.get_join_request_status(user_id, channel_id)
+                if request_status == "pending":
+                    status_text = "Rᴇǫᴜᴇsᴛ Pᴇɴᴅɪɴɢ ⏳"
+                elif request_status == "approved":
+                    status_text = "Aᴘᴘʀᴏᴠᴇᴅ ✅ (Jᴏɪɴ Nᴏᴡ)"
+                else:
+                    status_text = "Rᴇǫᴜᴇsᴛ Sᴜʙᴍɪᴛᴛᴇᴅ ⏳"
+            else:
+                status_text = "Nᴏᴛ Jᴏɪɴᴇᴅ ❌"
+            
+            channels_message += f"{c}. <code>{channel_name}</code> - <b>{status_text}</b>\n"
 
+            # Generate invite link if needed
             if timer > 0:
                 expire_time = datetime.now() + timedelta(minutes=timer)
-                invite = await client.create_chat_invite_link(
-                    chat_id=channel_id,
-                    expire_date=expire_time,
-                    creates_join_request=request
-                )
-                channel_link = invite.invite_link
+                try:
+                    invite = await client.create_chat_invite_link(
+                        chat_id=channel_id,
+                        expire_date=expire_time,
+                        creates_join_request=request
+                    )
+                    channel_link = invite.invite_link
+                except Exception as e:
+                    client.LOGGER(__name__, client.name).warning(f"Error creating invite link for {channel_name}: {e}")
 
+            # Add button based on user status
             if status not in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
-                buttons.append(InlineKeyboardButton(channel_name, url=channel_link))
+                # Check if user has already submitted request for request channels
+                if request and await client.mongodb.has_submitted_join_request(user_id, channel_id):
+                    request_status = await client.mongodb.get_join_request_status(user_id, channel_id)
+                    if request_status == "pending":
+                        # Don't add button if request is still pending
+                        continue
+                    elif request_status == "approved":
+                        # User can now join the channel
+                        button_text = f"{channel_name}"
+                    else:
+                        button_text = f"{channel_name}"
+                else:
+                    # User hasn't submitted request or it's a regular channel
+                    if request:
+                        button_text = f"{channel_name}"
+                    else:
+                        button_text = f"{channel_name}"
+                
+                buttons.append(InlineKeyboardButton(button_text, url=channel_link))
 
         # Add "Try Again" button if needed
         from_link = message.text.split(" ")
         if len(from_link) > 1:
             try_again_link = f"https://t.me/{client.username}/?start={from_link[1]}"
-            buttons.append(InlineKeyboardButton("Try Again", url=try_again_link))
+            buttons.append(InlineKeyboardButton("🔄 Try Again", url=try_again_link))
 
-        # Organize buttons in rows of 2
-        buttons_markup = InlineKeyboardMarkup([buttons[i:i + 2] for i in range(0, len(buttons), 2)])
+        # Organize buttons in rows of 1 for better readability
+        buttons_markup = InlineKeyboardMarkup([[button] for button in buttons])
         buttons_markup = None if not buttons else buttons_markup
 
         # Edit message with status update and buttons
         try:
             await msg.edit_text(text=channels_message, reply_markup=buttons_markup)
         except Exception as e:
-            client.LOGGER(__name__, client.name).warning(f"Error updating message: {e}")
+            client.LOGGER(__name__, client.name).warning(f"Error updating force sub message: {e}")
+            # Fallback: send new message if edit fails
+            try:
+                await msg.delete()
+                await message.reply(text=channels_message, reply_markup=buttons_markup)
+            except Exception:
+                pass
 
     return wrapper
 
