@@ -231,7 +231,7 @@ async def check_subscription(client, user_id):
                 statuses[channel_id] = actual_status
                 continue
             
-            # User is not a member
+            # User is not a member - check if they left after being approved  
             if request:
                 # For request channels, check if user has submitted a request
                 has_request = await client.mongodb.has_submitted_join_request(user_id, channel_id)
@@ -241,7 +241,7 @@ async def check_subscription(client, user_id):
                     
                     if request_status == "approved":
                         # Request was approved but user still not in channel
-                        # This means user might have left after approval
+                        # This means user might have left after approval - force them to rejoin
                         await client.mongodb.update_fsub_status(user_id, channel_id, "left")
                         await client.mongodb.remove_join_request(user_id, channel_id)
                         statuses[channel_id] = ChatMemberStatus.BANNED
@@ -261,11 +261,14 @@ async def check_subscription(client, user_id):
                 
         except UserNotParticipant:
             # User is not in the channel
+            await client.mongodb.update_fsub_status(user_id, channel_id, "left")
+            await client.mongodb.remove_channel_user(channel_id, user_id)
+            
             if request:
                 # For request channels, check if user has submitted a request
                 has_request = await client.mongodb.has_submitted_join_request(user_id, channel_id)
                 if has_request:
-                    # User has submitted request, allow them to proceed
+                    # User has submitted request but not in channel - still allow access for request channels
                     await client.mongodb.update_fsub_status(user_id, channel_id, "request_submitted")
                     statuses[channel_id] = ChatMemberStatus.MEMBER  # Treat as subscribed for request channels
                 else:
@@ -274,8 +277,6 @@ async def check_subscription(client, user_id):
                     statuses[channel_id] = ChatMemberStatus.BANNED
             else:
                 # Regular channel, user must join
-                await client.mongodb.update_fsub_status(user_id, channel_id, "left")
-                await client.mongodb.remove_channel_user(channel_id, user_id)
                 statuses[channel_id] = ChatMemberStatus.BANNED
                 
         except Forbidden:
@@ -368,15 +369,15 @@ def force_sub(func):
                         continue
                     elif request_status == "approved":
                         # User can now join the channel
-                        button_text = f"{channel_name}"
+                        button_text = f"✅ Join {channel_name}"
                     else:
-                        button_text = f"{channel_name}"
+                        button_text = f"📝 Request {channel_name}"
                 else:
                     # User hasn't submitted request or it's a regular channel
                     if request:
-                        button_text = f"{channel_name}"
+                        button_text = f"📝 Request {channel_name}"
                     else:
-                        button_text = f"{channel_name}"
+                        button_text = f"📢 {channel_name}"
                 
                 buttons.append(InlineKeyboardButton(button_text, url=channel_link))
 
