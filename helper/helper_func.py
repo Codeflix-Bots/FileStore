@@ -338,7 +338,7 @@ def force_sub(func):
                 if request_status == "pending":
                     status_text = "Rᴇǫᴜᴇsᴛ Pᴇɴᴅɪɴɢ ⏳"
                 elif request_status == "approved":
-                    status_text = "Aᴘᴘʀᴏᴠᴇᴅ ✅ (Jᴏɪɴ Nᴏᴡ)"
+                    status_text = "Aᴘᴘʀᴏᴠᴇᴅ ✅"
                 else:
                     status_text = "Rᴇǫᴜᴇsᴛ Sᴜʙᴍɪᴛᴛᴇᴅ ⏳"
             else:
@@ -369,15 +369,15 @@ def force_sub(func):
                         continue
                     elif request_status == "approved":
                         # User can now join the channel
-                        button_text = f"✅ Join {channel_name}"
+                        button_text = f"{channel_name}"
                     else:
-                        button_text = f"📝 Request {channel_name}"
+                        button_text = f"{channel_name}"
                 else:
                     # User hasn't submitted request or it's a regular channel
                     if request:
-                        button_text = f"📝 Request {channel_name}"
+                        button_text = f"{channel_name}"
                     else:
-                        button_text = f"📢 {channel_name}"
+                        button_text = f"{channel_name}"
                 
                 buttons.append(InlineKeyboardButton(button_text, url=channel_link))
 
