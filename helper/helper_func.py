@@ -323,28 +323,10 @@ def force_sub(func):
 
         # User is not subscribed to all channels
         buttons = []
-        channels_message = f"{client.messages.get('FSUB', '')}\n\n<b>ᴄʜᴀɴɴᴇʟ sᴜʙsᴄʀɪᴘᴛɪᴏɴ sᴛᴀᴛᴜs:</b>\n\n"
+        channels_message = f"{client.messages.get('FSUB', '')}\n\n"
 
-        c = 0
         for channel_id, (channel_name, channel_link, request, timer) in client.fsub_dict.items():
             status = statuses.get(channel_id, None)
-            c += 1
-            
-            # Enhanced status display for request channels
-            if status in {ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER}:
-                status_text = "Jᴏɪɴᴇᴅ ✅"
-            elif request and await client.mongodb.has_submitted_join_request(user_id, channel_id):
-                request_status = await client.mongodb.get_join_request_status(user_id, channel_id)
-                if request_status == "pending":
-                    status_text = "Rᴇǫᴜᴇsᴛ Pᴇɴᴅɪɴɢ ⏳"
-                elif request_status == "approved":
-                    status_text = "Aᴘᴘʀᴏᴠᴇᴅ ✅"
-                else:
-                    status_text = "Rᴇǫᴜᴇsᴛ Sᴜʙᴍɪᴛᴛᴇᴅ ⏳"
-            else:
-                status_text = "Nᴏᴛ Jᴏɪɴᴇᴅ ❌"
-            
-            channels_message += f"{c}. <code>{channel_name}</code> - <b>{status_text}</b>\n"
 
             # Generate invite link if needed
             if timer > 0:
