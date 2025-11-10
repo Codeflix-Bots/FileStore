@@ -8,27 +8,27 @@ OWNER_ID = 6893463477
 
 MSG_EFFECT = 5046509860389126442
 
-SHORT_URL = "linkshortify.com" # shortner url 
-SHORT_API = "" 
+SHORT_URL = "softurl.in" # shortner url 
+SHORT_API = "3ebfe6f558dc7fdcdcdeab913cb0109d6cafe097" 
 SHORT_TUT = "https://t.me/"
 
 # Bot Configuration
-SESSION = "yato"
+SESSION = "death"
 TOKEN = "642712"
-API_ID = ""
-API_HASH = ""
+API_ID = "29385418"
+API_HASH = "5737577bcb32ea1aac1ac394b96c4b10"
 WORKERS = 5
 
-DB_URI = "mongodb"
-DB_NAME = "yato"
+DB_URI = "mongodb+srv://tohay49247:psDCTVL5Db2eJmgk@cluster0.xbluqix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+DB_NAME = "deathcollect"
 
-FSUBS = [[-1002252585703, True, 10]] # Force Subscription Channels [channel_id, request_enabled, timer_in_minutes]
+FSUBS = [[-1002209650474, True, 10]] # Force Subscription Channels [channel_id, request_enabled, timer_in_minutes]
 # Database Channel (Primary)
 DB_CHANNEL =    # just put channel id dont add ""
 # Multiple Database Channels (can be set via bot settings)
 # DB_CHANNELS = {
-#     "-1002097438993": {"name": "Primary DB", "is_primary": True, "is_active": True},
-#     "-1002388476066": {"name": "Secondary DB", "is_primary": False, "is_active": True}
+#     "-1002209650474": {"name": "Primary DB", "is_primary": True, "is_active": True},
+#     "-1002209650474": {"name": "Secondary DB", "is_primary": False, "is_active": True}
 # }
 # Auto Delete Timer (seconds)
 AUTO_DEL = 300
