@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: Beat-Advance-File-Store-botV4
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 main.py
+    
+    envVars:
+      - key: TG_BOT_TOKEN
+        sync: false
+      
+      - key: APP_ID
+        sync: false
+      
+      - key: API_HASH
+        sync: false
+      
+      - key: OWNER_ID
+        sync: false
+      
+      - key: CHANNEL_ID
+        sync: false
+      
+      - key: DATABASE_URL
+        sync: false
+      
+      - key: DATABASE_NAME
+        value: Beat File store bot
+      
+      - key: PORT
+        value: "8001"
+      
+      - key: TG_BOT_WORKERS
+        value: "200"
