@@ -14,7 +14,7 @@ SHORT_TUT = "https://t.me/"
 
 # Bot Configuration
 SESSION = "death"
-TOKEN = ""
+TOKEN = "7700741277:AAEm0BnwilwAa9mXigBW9RMLN1AWoGOYyE0"
 API_ID = "29385418"
 API_HASH = "5737577bcb32ea1aac1ac394b96c4b10"
 WORKERS = 5
