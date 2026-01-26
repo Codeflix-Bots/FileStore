@@ -22,7 +22,10 @@ WORKERS = 5
 DB_URI = "mongodb+srv://tohay49247:psDCTVL5Db2eJmgk@cluster0.xbluqix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 DB_NAME = "deathcollect"
 
-FSUBS = [[-1002275431283, True, 10]] # Force Subscription Channels [channel_id, request_enabled, timer_in_minutes]
+FSUBS = [
+    [-1002275431283, True, 10], 
+    [-1003627973176, True, 10]
+]  # Force Subscription Channels [channel_id, request_enabled, timer_in_minutes]
 # Database Channel (Primary)
 DB_CHANNEL = -1002325957594   # just put channel id dont add ""
 # Multiple Database Channels (can be set via bot settings)
