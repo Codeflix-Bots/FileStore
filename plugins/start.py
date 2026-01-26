@@ -57,7 +57,7 @@ async def start_command(client: Client, message: Message):
 
             short_photo = client.messages.get("SHORT_PIC", "")
             short_caption = client.messages.get("SHORT_MSG", "")
-            tutorial_link = getattr(client, 'tutorial_link', "https://t.me/How_to_Download_7x/26")
+            tutorial_link = getattr(client, 'tutorial_link', "https://t.me/howtoverifyy/3")
 
             await client.send_photo(
                 chat_id=message.chat.id,
@@ -69,7 +69,7 @@ async def start_command(client: Client, message: Message):
                         InlineKeyboardButton("ᴛᴜᴛᴏʀɪᴀʟ •", url=tutorial_link)
                     ],
                     [
-                        InlineKeyboardButton(" • ʙᴜʏ ᴘʀᴇᴍɪᴜᴍ •", url="https://t.me/Premium_Fliix/21")
+                        InlineKeyboardButton(" • ʙᴜʏ ᴘʀᴇᴍɪᴜᴍ •", url="https://t.me/spicypremium")
                     ]
                 ])
             )
@@ -296,7 +296,7 @@ async def request_command(client: Client, message: Message):
         return
 
     if not is_user_premium: 
-        BUTTON_URL = "https://t.me/hanime_arena/5"
+        BUTTON_URL = "https://t.me/Spicylinebun/5"
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 Upgrade to Premium", url=BUTTON_URL)]
         ])
