@@ -3,7 +3,7 @@ from logging.handlers import RotatingFileHandler
 
 # Bot Configuration
 LOG_FILE_NAME = "bot.log"
-PORT = '5010'
+PORT = 5010
 OWNER_ID = 6893463477
 
 MSG_EFFECT = 5046509860389126442
@@ -14,7 +14,7 @@ SHORT_TUT = "https://t.me/"
 
 # Bot Configuration
 SESSION = "death"
-TOKEN = "642712"
+TOKEN = ""
 API_ID = "29385418"
 API_HASH = "5737577bcb32ea1aac1ac394b96c4b10"
 WORKERS = 5
@@ -24,11 +24,11 @@ DB_NAME = "deathcollect"
 
 FSUBS = [[-1002209650474, True, 10]] # Force Subscription Channels [channel_id, request_enabled, timer_in_minutes]
 # Database Channel (Primary)
-DB_CHANNEL =    # just put channel id dont add ""
+DB_CHANNEL = -1002325957594   # just put channel id dont add ""
 # Multiple Database Channels (can be set via bot settings)
 # DB_CHANNELS = {
 #     "-1002209650474": {"name": "Primary DB", "is_primary": True, "is_active": True},
-#     "-1002209650474": {"name": "Secondary DB", "is_primary": False, "is_active": True}
+#     "-1002325957594": {"name": "Secondary DB", "is_primary": False, "is_active": True}
 # }
 # Auto Delete Timer (seconds)
 AUTO_DEL = 300
