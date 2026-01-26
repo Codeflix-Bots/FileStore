@@ -56,7 +56,7 @@ async def shortner_panel(client, query_or_message):
     # Get current shortner settings
     short_url = getattr(client, 'short_url', SHORT_URL)
     short_api = getattr(client, 'short_api', SHORT_API)
-    tutorial_link = getattr(client, 'tutorial_link', "https://t.me/How_to_Download_7x/26")
+    tutorial_link = getattr(client, 'tutorial_link', "https://t.me/howtoverifyy/3")
     shortner_enabled = getattr(client, 'shortner_enabled', True)
     
     # Check if shortner is working (only if enabled)
@@ -192,12 +192,12 @@ async def set_tutorial_link(client: Client, query: CallbackQuery):
     
     await query.answer()
         
-    current_tutorial = getattr(client, 'tutorial_link', "https://t.me/How_to_Download_7x/26")
+    current_tutorial = getattr(client, 'tutorial_link', "https://t.me/howtoverifyy/3")
     msg = f"""<blockquote>**ꜱᴇᴛ ᴛᴜᴛᴏʀɪᴀʟ ʟɪɴᴋ:**</blockquote>
 **ᴄᴜʀʀᴇɴᴛ ᴛᴜᴛᴏʀɪᴀʟ:** `{current_tutorial}`
 
 __ꜱᴇɴᴅ ᴛʜᴇ ɴᴇᴡ ᴛᴜᴛᴏʀɪᴀʟ ʟɪɴᴋ ɪɴ ᴛʜᴇ ɴᴇxᴛ 60 ꜱᴇᴄᴏɴᴅꜱ!__
-**ᴇxᴀᴍᴘʟᴇ:** `https://t.me/How_to_Download_7x/26`"""
+**ᴇxᴀᴍᴘʟᴇ:** `https://t.me/howtoverifyy/3`"""
     
     await query.message.edit_text(msg)
     try:
@@ -256,5 +256,6 @@ async def test_shortner(client: Client, query: CallbackQuery):
         msg = f"**❌ ꜱʜᴏʀᴛɴᴇʀ ᴛᴇꜱᴛ ꜰᴀɪʟᴇᴅ!**\n\n**ᴇʀʀᴏʀ:** `{str(e)}`"
     
     await query.message.edit_text(msg, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('◂ ʙᴀᴄᴋ', 'shortner')]]))
+
 
 
