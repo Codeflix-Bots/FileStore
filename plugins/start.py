@@ -349,5 +349,5 @@ async def my_plan(client: Client, message: Message):
             "🔸 Plan: Free\n"
             "🔸 Request: Disabled\n\n"
             "🔓 Unlock Premium to get more benefits\n"
-            "Contact: @GetoPro"
+            "Contact: @Goathunterr"
         )
