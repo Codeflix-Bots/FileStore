@@ -10,7 +10,7 @@ MSG_EFFECT = 5046509860389126442
 
 SHORT_URL = "softurl.in" # shortner url 
 SHORT_API = "3ebfe6f558dc7fdcdcdeab913cb0109d6cafe097" 
-SHORT_TUT = "https://t.me/"
+SHORT_TUT = "https://t.me/howtoverifyy/3"
 
 # Bot Configuration
 SESSION = "death"
